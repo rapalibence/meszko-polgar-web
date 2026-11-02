@@ -17,9 +17,11 @@ export type PitData = {
 };
 
 /** Fraction of a ring's width taken by the sloped face between two benches. */
-const SLOPE_RING_FRACTION = 0.42;
-/** Terrain spans [-extent, extent]; the rim sits at `radius`. */
-const EXTENT_FACTOR = 1.4;
+const SLOPE_RING_FRACTION = 0.3;
+/** Terrain reaches `extent` from the centre; the rim sits at `radius`. */
+const EXTENT_FACTOR = 3;
+/** Share of rings spent inside the rim, where the benches need resolution. */
+const INNER_RING_SHARE = 0.75;
 
 function lcg(seed: number): () => number {
   let s = (seed >>> 0) || 1;
@@ -40,7 +42,9 @@ export function buildPit(opts: PitOptions): PitData {
   const tierHeight = (i: number) => 0 - tierStep * Math.min(tiers, Math.max(0, i)) + 0;
 
   const heightAt = (x: number, z: number): number => {
-    const d = Math.hypot(x, z);
+    // Low-frequency wobble so the benches are not perfect circles.
+    const wobble = noise(x * 0.05 + 31, z * 0.05 - 17) * radius * 0.06;
+    const d = Math.hypot(x, z) + wobble;
     const t = clamp01((radius - d) / radius); // 0 at rim, 1 at centre
     const u = t * tiers;
     const tier = Math.floor(u);
@@ -51,33 +55,42 @@ export function buildPit(opts: PitOptions): PitData {
 
     const onSlope = d < radius && ramp > 0 && ramp < 1;
     const insideRim = d < radius;
-    const amplitude = insideRim ? (onSlope ? depth * 0.01 : depth * 0.03) : depth * 0.01;
-    const n = noise(x * 0.18, z * 0.18);
+    const amplitude = insideRim ? (onSlope ? depth * 0.004 : depth * 0.012) : depth * 0.01;
+    const n = noise(x * 0.12, z * 0.12);
     return base + n * amplitude;
   };
 
+  // Polar grid: `segments` rings x `segments` angular steps. Rings follow the
+  // benches, so terrace faces triangulate cleanly (no sawtooth).
   const quads = segments * segments;
   const positions = new Float32Array(quads * 2 * 3 * 3);
   const normals = new Float32Array(positions.length);
-  const cell = (extent * 2) / segments;
+  const innerRings = Math.round(segments * INNER_RING_SHARE);
+  const ringRadius = (i: number) =>
+    i <= innerRings
+      ? (radius * i) / innerRings
+      : radius + ((extent - radius) * (i - innerRings)) / (segments - innerRings);
 
-  // Cache heights on the (segments+1)^2 grid.
-  const grid = new Float32Array((segments + 1) * (segments + 1));
-  for (let j = 0; j <= segments; j++) {
-    for (let i = 0; i <= segments; i++) {
-      const x = -extent + i * cell;
-      const z = -extent + j * cell;
-      grid[j * (segments + 1) + i] = heightAt(x, z);
+  const n = segments + 1;
+  const gx = new Float32Array(n * n);
+  const gz = new Float32Array(n * n);
+  const gh = new Float32Array(n * n);
+  for (let i = 0; i <= segments; i++) {
+    const r = ringRadius(i);
+    for (let a = 0; a <= segments; a++) {
+      const ang = (a / segments) * Math.PI * 2;
+      const x = Math.cos(ang) * r;
+      const z = Math.sin(ang) * r;
+      const k = i * n + a;
+      gx[k] = x; gz[k] = z; gh[k] = heightAt(x, z);
     }
   }
-  const h = (i: number, j: number) => grid[j * (segments + 1) + i];
 
   let p = 0;
-  const pushTri = (
-    ax: number, ay: number, az: number,
-    bx: number, by: number, bz: number,
-    cx: number, cy: number, cz: number,
-  ) => {
+  const pushTri = (a: number, b: number, c: number) => {
+    const ax = gx[a], ay = gh[a], az = gz[a];
+    const bx = gx[b], by = gh[b], bz = gz[b];
+    const cx = gx[c], cy = gh[c], cz = gz[c];
     const ux = bx - ax, uy = by - ay, uz = bz - az;
     const vx = cx - ax, vy = cy - ay, vz = cz - az;
     let nx = uy * vz - uz * vy;
@@ -85,6 +98,7 @@ export function buildPit(opts: PitOptions): PitData {
     let nz = ux * vy - uy * vx;
     const len = Math.hypot(nx, ny, nz) || 1;
     nx /= len; ny /= len; nz /= len;
+    if (ny < 0) { nx = -nx; ny = -ny; nz = -nz; }
     const pts = [ax, ay, az, bx, by, bz, cx, cy, cz];
     for (let k = 0; k < 9; k += 3) {
       positions[p] = pts[k]; positions[p + 1] = pts[k + 1]; positions[p + 2] = pts[k + 2];
@@ -93,14 +107,12 @@ export function buildPit(opts: PitOptions): PitData {
     }
   };
 
-  for (let j = 0; j < segments; j++) {
-    for (let i = 0; i < segments; i++) {
-      const x0 = -extent + i * cell, x1 = x0 + cell;
-      const z0 = -extent + j * cell, z1 = z0 + cell;
-      const h00 = h(i, j), h10 = h(i + 1, j), h01 = h(i, j + 1), h11 = h(i + 1, j + 1);
-      // Counter-clockwise when viewed from above (+y).
-      pushTri(x0, h00, z0, x0, h01, z1, x1, h10, z0);
-      pushTri(x1, h10, z0, x0, h01, z1, x1, h11, z1);
+  for (let i = 0; i < segments; i++) {
+    for (let a = 0; a < segments; a++) {
+      const k00 = i * n + a, k01 = i * n + a + 1;
+      const k10 = (i + 1) * n + a, k11 = (i + 1) * n + a + 1;
+      pushTri(k00, k10, k11);
+      pushTri(k00, k11, k01);
     }
   }
 

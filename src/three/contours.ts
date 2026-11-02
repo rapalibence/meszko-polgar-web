@@ -14,8 +14,10 @@ const Y_OFFSET = 0.05;
  * 0, -interval, -2*interval, ... down to -depth.
  */
 export function buildContours(pit: PitData, opts: PitOptions, interval: number): ContourData {
-  const { segments, depth } = opts;
-  const extent = pit.extent;
+  const { segments, depth, tiers } = opts;
+  const tierStep = depth / tiers;
+  // Sample only the pit itself (benches); the flat outside has no contours.
+  const extent = opts.radius * 1.15;
   const cell = (extent * 2) / segments;
   const n = segments + 1;
 
@@ -44,6 +46,9 @@ export function buildContours(pit: PitData, opts: PitOptions, interval: number):
     const level = -k * interval;
     // Skip the exact rim level: it would trace the whole flat outer field.
     if (level === 0) continue;
+    // Levels that coincide with a bench floor trace the floor noise as squiggles; skip them.
+    const distToFloor = Math.abs(level / tierStep - Math.round(level / tierStep)) * tierStep;
+    if (distToFloor < 0.3) continue;
     for (let j = 0; j < segments; j++) {
       for (let i = 0; i < segments; i++) {
         const x0 = -extent + i * cell, x1 = x0 + cell;
