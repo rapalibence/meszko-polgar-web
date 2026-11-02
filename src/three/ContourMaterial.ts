@@ -41,9 +41,9 @@ export function createContourMaterial(): THREE.ShaderMaterial {
         float major = step(0.5, 1.0 - abs(fract(vLevel / uMajorEvery + 0.5) - 0.5) * 2.0 * uMajorEvery / 0.6);
         float sweep = 1.0 - smoothstep(0.0, 1.5, abs(vWorld.x - uSweep));
         vec3 color = uInk;
-        float alpha = 0.18;
+        float alpha = 0.3;
         if (major > 0.5) { color = mix(uInk, uAccent, 0.8); alpha = 0.45; }
-        alpha = max(alpha, sweep * 0.55);
+        alpha = max(alpha, sweep * 0.75);
         color = mix(color, uInk, sweep * 0.4);
         if (isActive) { color = uAccent; alpha = 0.9; }
         gl_FragColor = vec4(color, alpha);

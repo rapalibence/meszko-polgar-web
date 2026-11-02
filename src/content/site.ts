@@ -15,6 +15,8 @@ export const site = {
     h1: 'Zúzottkő, egyenesen a bányából.',
     sub: 'Minőségi kőanyag útépítéshez, betongyártáshoz és tereprendezéshez. Saját rakodás, hitelesített mérlegelés, rövid határidő.',
     secondary: 'Termékek',
+    data: ['7 terasz', '14 m mélység', 'Székesfehérvár III. és IV. bányatelek'],
+    proof: ['Hitelesített hídmérleg', 'Környezetvédelmi működési engedély'],
   },
   marquee: ['0/4', '4/8', '8/16', '16/32', 'Z 0/32', 'TERMÉSKŐ'],
   figures: [

@@ -16,7 +16,7 @@ const STEPS = processSteps.length;
 function StepCard({ index }: { index: number }) {
   const step = processSteps[index];
   return (
-    <div data-step-card className="w-full max-w-[520px] border border-hairline bg-bg-raised/95 p-5 md:p-8 short:p-4 backdrop-blur-[2px]">
+    <div data-step-card className="w-full max-w-[520px] border border-hairline bg-bg-raised p-5 md:p-8 short:p-4">
       <span className="font-mono text-[13px] text-accent tabular-nums">{step.depthM === 0 ? '0 m' : `-${step.depthM} m`}</span>
       <h3 className="mt-2 md:mt-3 text-3xl md:text-5xl short:text-2xl font-semibold text-ink">{step.title}</h3>
       <p className="mt-3 md:mt-4 text-[15px] md:text-[17px] short:text-[14px] short:leading-snug text-stone">{step.body}</p>
@@ -45,9 +45,11 @@ export function Descent() {
       trigger: el,
       start: 'top top',
       end: 'bottom bottom',
+      scrub: 1,
       onUpdate: (self) => {
         set({ descent: self.progress });
-        setActive(Math.min(STEPS - 1, Math.floor(self.progress * STEPS)));
+        const next = Math.min(STEPS - 1, Math.floor(self.progress * STEPS));
+        setActive((prev) => (prev === next ? prev : next));
       },
       onToggle: (self) => set({ descentVisible: self.isActive }),
     });

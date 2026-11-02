@@ -9,6 +9,8 @@ export type PitWorkerResponse = {
   contourLevels: Float32Array;
   extent: number;
   tierStep: number;
+  ramp: { x: number; y: number; z: number; angle: number }[];
+  floorY: number;
 };
 
 self.onmessage = (e: MessageEvent<PitWorkerRequest>) => {
@@ -22,6 +24,8 @@ self.onmessage = (e: MessageEvent<PitWorkerRequest>) => {
     contourLevels: c.levels,
     extent: pit.extent,
     tierStep: opts.depth / opts.tiers,
+    ramp: pit.rampSamples(48),
+    floorY: -opts.depth,
   };
   (self as unknown as Worker).postMessage(msg, [
     msg.positions.buffer,

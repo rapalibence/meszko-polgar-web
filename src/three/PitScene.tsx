@@ -6,11 +6,12 @@ import { createContourMaterial } from './ContourMaterial';
 import { createTerrainMaterial } from './TerrainMaterial';
 import { CameraRig } from './CameraRig';
 import { Dust } from './Dust';
+import { Props } from './Props';
 import { hasWebGL } from './webgl';
 import { useScrollStore } from '../lib/scrollStore';
 import { useReducedMotion } from '../lib/useReducedMotion';
 
-export const PIT_OPTIONS = { tiers: 7, radius: 10, depth: 14, segments: 112, seed: 7 };
+export const PIT_OPTIONS = { tiers: 7, radius: 10, depth: 14, segments: 160, seed: 7 };
 const CONTOUR_INTERVAL = 1;
 const SWEEP_PERIOD = 8;
 
@@ -75,6 +76,7 @@ function Pit({ reducedMotion, data }: { reducedMotion: boolean; data: PitWorkerR
     <group>
       <mesh geometry={terrainGeom} material={terrain.material} />
       <lineSegments geometry={contourGeom} material={material} />
+      <Props ramp={data.ramp} floorY={data.floorY} radius={PIT_OPTIONS.radius} />
       
     </group>
   );
@@ -83,8 +85,8 @@ function Pit({ reducedMotion, data }: { reducedMotion: boolean; data: PitWorkerR
 function Lights() {
   return (
     <>
-      <directionalLight position={[18, 9, 6]} intensity={2.6} color="#FFF1E0" />
-      <hemisphereLight args={['#7A7468', '#141311', 1.0]} />
+      <directionalLight position={[18, 9, 6]} intensity={3.0} color="#FFF1E0" />
+      <hemisphereLight args={['#8C8578', '#1A1816', 1.35]} />
       <pointLight position={[-12, -4, -9]} intensity={1.4} color="#E4561B" distance={50} decay={1.1} />
     </>
   );
@@ -118,12 +120,12 @@ export function PitScene() {
     >
       {webgl ? (
         <Canvas
-          dpr={narrow ? 1 : [1, 1.5]}
+          dpr={narrow ? 1 : [1, 1.25]}
           frameloop={visible ? 'always' : 'demand'}
           gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
           camera={{ fov: 36, near: 0.1, far: 200, position: [17, 10, 19] }}
         >
-          <fog attach="fog" args={['#141311', 24, 60]} />
+          <fog attach="fog" args={['#1A1816', 26, 64]} />
           <Lights />
           {data && <Pit reducedMotion={reducedMotion} data={data} />}
           {!narrow && !reducedMotion && <Dust extent={pitExtent} depth={PIT_OPTIONS.depth} />}
