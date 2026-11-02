@@ -13,14 +13,15 @@ export function Contact() {
   return (
     <section id="kapcsolat" ref={ref} className="relative z-10 bg-bg py-24 md:py-32">
       <div className="mx-auto max-w-[1400px] px-5 md:px-8">
-        <h2 data-reveal className="text-5xl md:text-6xl text-ink">{site.contact.h2}</h2>
-        <p data-reveal className="mt-5 max-w-[60ch] text-stone">{site.contact.sub}</p>
+        <p data-reveal className="font-mono text-[12px] uppercase tracking-[0.18em] text-khaki">Kapcsolat</p>
+        <h2 data-reveal className="mt-4 text-5xl md:text-7xl leading-[0.92] text-ink">{site.contact.h2}</h2>
+        <p data-reveal className="mt-5 max-w-[60ch] text-[17px] text-stone-deep">{site.contact.sub}</p>
 
         <div className="mt-12 grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-8">
           <div data-reveal className="md:col-span-7">
             <QuoteForm />
           </div>
-          <aside data-reveal className="md:col-span-5 border border-hairline p-6 md:p-8">
+          <aside data-reveal className="md:col-span-5 bg-panel p-6 md:p-8">
             <ul className="divide-y divide-hairline">
               {site.contact.rows.map((r) => {
                 const Icon = icons[r.icon];

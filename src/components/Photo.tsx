@@ -8,40 +8,43 @@ type Props = {
   h: number;
   alt: string;
   className?: string;
-  eager?: boolean;
+  imgClassName?: string;
+  /** Above-the-fold image: eager + high fetch priority. */
+  priority?: boolean;
   /** Responsive sizes hint, e.g. '(min-width: 768px) 50vw, 100vw'. */
   sizes?: string;
+  /** Skip the wipe reveal (e.g. when a parent animates). */
+  still?: boolean;
 };
 
-/** Photo with wipe reveal. Current sources are procedural placeholders. */
-export function Photo({ src, w, h, alt, className, eager, sizes = '(min-width: 768px) 40vw, 100vw' }: Props) {
+/** Responsive photo (`-sm` variant for small viewports) with an optional wipe reveal. */
+export function Photo({ src, w, h, alt, className, imgClassName, priority, sizes = '(min-width: 768px) 40vw, 100vw', still }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
   const reduced = useReducedMotion();
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(([e]) => { if (e?.isIntersecting) { setInView(true); io.disconnect(); } }, { threshold: 0.2 });
+    if (!el || still) return;
+    const io = new IntersectionObserver(([e]) => { if (e?.isIntersecting) { setInView(true); io.disconnect(); } }, { threshold: 0.15 });
     io.observe(el);
     return () => io.disconnect();
-  }, []);
+  }, [still]);
+  const shown = still || inView || reduced;
   return (
-    <div ref={ref} className={cn('relative', className)}>
-      {/* The clipped child is separate from the observed wrapper: Chrome's IntersectionObserver
-          treats a fully clipped target as non-intersecting. */}
-      <div className={cn('absolute inset-0 overflow-hidden reveal-clip', (inView || reduced) && 'is-in')}>
-      <img
-        src={src}
-        srcSet={`${src.replace('.webp', '-sm.webp')} ${Math.round(w / 2)}w, ${src} ${w}w`}
-        sizes={sizes}
-        width={w}
-        height={h}
-        alt={alt}
-        loading={eager ? 'eager' : 'lazy'}
-        decoding="async"
-        className="h-full w-full object-cover [filter:saturate(.8)_contrast(1.08)] transition-transform duration-500 group-hover:[@media(hover:hover)_and_(pointer:fine)]:scale-[1.03]"
-        style={{ transitionTimingFunction: 'var(--ease)' }}
-      />
+    <div ref={ref} className={cn('relative overflow-hidden', className)}>
+      <div className={cn('absolute inset-0', !still && 'reveal-photo', shown && 'is-in')}>
+        <img
+          src={src}
+          srcSet={`${src.replace('.webp', '-sm.webp')} ${Math.round(w / 2)}w, ${src} ${w}w`}
+          sizes={sizes}
+          width={w}
+          height={h}
+          alt={alt}
+          loading={priority ? 'eager' : 'lazy'}
+          fetchPriority={priority ? 'high' : undefined}
+          decoding="async"
+          className={cn('h-full w-full object-cover', imgClassName)}
+        />
       </div>
     </div>
   );

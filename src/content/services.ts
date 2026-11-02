@@ -4,10 +4,10 @@ export const services = {
     icon: 'FileCheck' as const,
     title: 'Digitális szállítólevél',
     body: 'Minden fuvarhoz elektronikus szállítólevél készül, amelyet az átvevő a helyszínen igazol. Átlátható, visszakereshető dokumentáció, papír nélkül.',
-    photo: '/img/boulders.webp',
+    photo: '/photo/loading.webp',
   },
   rows: [
-    { icon: 'Truck' as const, title: 'Szállítás', body: 'Egy- és többfuvaros megrendelést is vállalunk, akár másnapi kiszállítással a szabad kapacitás függvényében.' },
-    { icon: 'Scales' as const, title: 'Rakodás a telephelyen', body: 'Rakodógépes felrakás, rövid várakozási idő. Nyitvatartás hétköznap 6-tól 16 óráig.' },
+    { icon: 'Truck' as const, photo: '/photo/truck-road.webp', title: 'Szállítás', body: 'Egy- és többfuvaros megrendelést is vállalunk, akár másnapi kiszállítással a szabad kapacitás függvényében.' },
+    { icon: 'Scales' as const, photo: '/photo/boulders.webp', title: 'Rakodás a telephelyen', body: 'Rakodógépes felrakás, rövid várakozási idő. Nyitvatartás hétköznap 6-tól 16 óráig.' },
   ],
 };

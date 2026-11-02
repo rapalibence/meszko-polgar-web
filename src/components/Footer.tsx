@@ -4,11 +4,6 @@ import { site } from '../content/site';
 export function Footer() {
   return (
     <footer className="relative bg-dark text-dark-ink">
-      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        {[30, 55, 80].map((p) => (
-          <div key={p} className="absolute inset-x-0 h-px bg-dark-hairline" style={{ top: `${p}%` }} />
-        ))}
-      </div>
       <div className="relative mx-auto max-w-[1400px] px-5 md:px-8 py-12 md:py-16">
         <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
           <div>
@@ -23,7 +18,10 @@ export function Footer() {
             ))}
           </nav>
         </div>
-        <p className="mt-10 text-[13px] text-dark-ink/50">{site.footer.copyright}</p>
+        <div className="mt-10 flex flex-col gap-2 text-[13px] text-dark-ink/50 md:flex-row md:justify-between">
+          <p>{site.footer.copyright}</p>
+          <p>{site.footer_credit}</p>
+        </div>
       </div>
     </footer>
   );

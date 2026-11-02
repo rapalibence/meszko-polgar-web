@@ -18,7 +18,6 @@ export const site = {
     data: ['7 terasz', '14 m mélység', 'Székesfehérvár III. és IV. bányatelek'],
     proof: ['Hitelesített hídmérleg', 'Környezetvédelmi működési engedély'],
   },
-  marquee: ['0/4', '4/8', '8/16', '16/32', 'Z 0/32', 'TERMÉSKŐ'],
   figures: [
     { value: '2011', label: 'óta a piacon', numeric: 2011 },
     { value: '[200 000]', label: 'tonna éves kapacitás', numeric: null },
@@ -33,11 +32,18 @@ export const site = {
       'Tájrendezési terv szerinti művelés',
       '[CE / minőségi tanúsítvány]',
     ],
-    photo: '/img/contours.webp',
+    photo: '/photo/hero-quarry.webp',
   },
   process: {
+    eyebrow: 'Folyamat',
     h2: 'A kőtől a fuvarig',
+    sub: 'Öt lépés, egy telephelyen. Minden tonna mérve, minden fuvar dokumentálva.',
   },
+  ctaBand: {
+    h3: 'Kell kő a jövő hétre?',
+    sub: 'Küldje el a frakciót, a mennyiséget és a címet. Egy munkanapon belül árat adunk.',
+  },
+  footer_credit: 'Fotók: Unsplash (ideiglenes, a saját fotókig).',
   products: {
     h2: 'Frakciók és felhasználás',
     intro: 'Az alábbi frakciók érhetők el a telephelyen. Egyedi igénnyel keressen minket.',

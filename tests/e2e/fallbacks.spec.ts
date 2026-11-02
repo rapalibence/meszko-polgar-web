@@ -2,11 +2,9 @@ import { expect, test } from '@playwright/test';
 
 test.describe('reduced motion', () => {
   test.use({ reducedMotion: 'reduce' });
-  test('nothing moves', async ({ page }) => {
+  test('nothing moves and everything is visible', async ({ page }) => {
     await page.goto('/');
     await page.waitForTimeout(1000);
-    const marquee = await page.locator('[data-marquee-track]').evaluate((el) => getComputedStyle(el).animationName);
-    expect(marquee).toBe('none');
     const moving = await page.evaluate(() =>
       Array.from(document.querySelectorAll('main *')).filter((el) => {
         const t = getComputedStyle(el).transform;
@@ -14,5 +12,9 @@ test.describe('reduced motion', () => {
       }).length,
     );
     expect(moving).toBe(0);
+    const hidden = await page.evaluate(() =>
+      Array.from(document.querySelectorAll('[data-reveal], .reveal-photo')).filter((el) => parseFloat(getComputedStyle(el).opacity) < 1).length,
+    );
+    expect(hidden).toBe(0);
   });
 });

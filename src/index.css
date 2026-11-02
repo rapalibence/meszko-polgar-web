@@ -10,26 +10,22 @@
    Spec: docs/superpowers/specs/2026-11-02-meszko-polgar-website-design.md §3
 ------------------------------------------------------------------- */
 :root {
-  --bg: #F3EADB;
-  --bg-raised: #FBF6EC;
-  --ink: #15130F;
+  --bg: #F4F1EA;
+  --bg-raised: #FBF9F4;
+  --panel: #DCD4C0;
+  --panel-deep: #C9BFA6;
+  --khaki: #6B6A4F;
+  --olive: #2A2A1E;
+  --ink: #0E0D09;
   --stone: #6E685F;
   --stone-deep: #57514A;
-  --rock: #8C867A;
-  --sand: #E9D8B4;
-  --sand-deep: #CDB58A;
-  --rust: #D9521A;
-  --rust-deep: #A83E12;
-  --slate: #4A5A6E;
-  --sky: #1F3A5F;
-  --sky-deep: #14283F;
-  --hairline: rgba(21, 19, 15, 0.14);
+  --hairline: rgba(14, 13, 9, 0.14);
   --accent: #D9521A;
   --accent-hover: #E4601F;
   --accent-deep: #A83E12;
-  --dark: #15130F;
-  --dark-ink: #F3EADB;
-  --dark-hairline: rgba(243, 234, 219, 0.14);
+  --dark: #0E0D09;
+  --dark-ink: #F4F1EA;
+  --dark-hairline: rgba(244, 241, 234, 0.16);
 
   --ease: cubic-bezier(.23,1,.32,1);
   --ease-move: cubic-bezier(.77,0,.175,1);
@@ -43,12 +39,10 @@
   --color-ink: var(--ink);
   --color-stone: var(--stone);
   --color-stone-deep: var(--stone-deep);
-  --color-sand: var(--sand);
-  --color-sand-deep: var(--sand-deep);
-  --color-sky: var(--sky);
-  --color-sky-deep: var(--sky-deep);
-  --color-slate: var(--slate);
-  --color-rock: var(--rock);
+  --color-panel: var(--panel);
+  --color-panel-deep: var(--panel-deep);
+  --color-khaki: var(--khaki);
+  --color-olive: var(--olive);
   --color-hairline: var(--hairline);
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
@@ -152,13 +146,17 @@
 }
 
 /* Photo wipe reveal. */
-.reveal-clip { clip-path: inset(0 0 100% 0); transition: clip-path var(--dur-reveal) var(--ease); }
-.reveal-clip.is-in { clip-path: inset(0 0 0 0); }
-@media (prefers-reduced-motion: reduce) { .reveal-clip { clip-path: inset(0 0 0 0); } }
+.reveal-photo { opacity: 0; transform: scale(1.04); transition: opacity 700ms var(--ease), transform 1100ms var(--ease); will-change: transform, opacity; }
+.reveal-photo.is-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .reveal-photo { opacity: 1; transform: none; transition: none; } }
 
-/* Slanted section edge (3vw rise, left to right). */
-.edge-slant { clip-path: polygon(0 0, 100% 3vw, 100% 100%, 0 100%); }
-.edge-slant-r { clip-path: polygon(0 3vw, 100% 0, 100% 100%, 0 100%); }
 /* Clipped line wrapper for kinetic headlines. */
 .line-clip { display: block; overflow: hidden; }
 .line-clip > span { display: block; will-change: transform; }
+
+/* Dashed editorial divider (Bumi). */
+.rule-dashed { background-image: linear-gradient(to right, var(--hairline) 50%, transparent 50%); background-size: 10px 1px; background-repeat: repeat-x; height: 1px; }
+.rule-dashed-dark { background-image: linear-gradient(to right, var(--dark-hairline) 50%, transparent 50%); background-size: 10px 1px; background-repeat: repeat-x; height: 1px; }
+.row-dashed { position: relative; }
+.row-dashed::after { content: ''; position: absolute; inset-inline: 0; bottom: 0; height: 1px; background-image: linear-gradient(to right, var(--hairline) 50%, transparent 50%); background-size: 10px 1px; }
+.row-dashed-dark::after { background-image: linear-gradient(to right, var(--dark-hairline) 50%, transparent 50%); }

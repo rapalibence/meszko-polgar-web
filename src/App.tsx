@@ -1,27 +1,45 @@
+import { useLayoutEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Nav } from './components/Nav';
 import { Hero } from './components/Hero';
 import { Footer } from './components/Footer';
-import { Marquee } from './components/Marquee';
-import { Products } from './components/Products';
-import { Descent } from './components/Descent';
+import { Stats } from './components/Stats';
+import { Fractions } from './components/Fractions';
+import { Process } from './components/Process';
+import { CtaBand } from './components/CtaBand';
 import { Services } from './components/Services';
 import { About } from './components/About';
 import { Contact } from './components/Contact';
 import { Legal } from './pages/Legal';
 
 
+/** The browser's hash jump fires before React has rendered the sections; redo it once they exist. */
+function useHashLanding() {
+  useLayoutEffect(() => {
+    const id = decodeURIComponent(window.location.hash.slice(1));
+    if (!id) return;
+    const el = document.getElementById(id);
+    if (!el) return;
+    const prev = document.documentElement.style.scrollBehavior;
+    document.documentElement.style.scrollBehavior = 'auto';
+    el.scrollIntoView();
+    document.documentElement.style.scrollBehavior = prev;
+  }, []);
+}
+
 function Home() {
+  useHashLanding();
   return (
     <>
       <Nav />
       <main className="relative z-10">
         <Hero />
-        <Marquee />
-        <Products />
-        <Descent />
+        <Stats />
+        <Fractions />
+        <Process />
         <Services />
         <About />
+        <CtaBand />
         <Contact />
       </main>
       <div className="relative z-10">
