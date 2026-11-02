@@ -31,7 +31,7 @@ Vercel, framework Vite, output `dist/`. SPA rewrite and `/api/*` in `vercel.json
 ## Credits
 
 - Smooth scrolling: [Lenis](https://github.com/darkroomengineering/lenis) (MIT), pointer devices only.
-- Hero and service loops: Pexels videos 8382429 and 8382433 (Pexels license), re-encoded to 720p in `public/video/`.
+- Hero photograph and the six fraction product shots were generated with Higgsfield (gpt_image_2_5) as placeholders; see `public/photo/CREDITS.json`.
 - Placeholder photography: Unsplash, see `public/photo/CREDITS.json`. Replace with the client's own photos.
 
 ## Before launch (client checklist)

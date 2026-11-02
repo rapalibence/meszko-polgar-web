@@ -1,12 +1,10 @@
 import { expect, test } from '@playwright/test';
 
-test('hero has a muted looping video with a poster, two link cards, and the CTA above the fold', async ({ page }) => {
+test('hero has a priority photograph, two link cards, and the CTA above the fold', async ({ page }) => {
   await page.goto('/');
-  const video = page.locator('#hero video[data-hero-video]');
-  await expect(video).toHaveCount(1);
-  await expect(video).toHaveAttribute('poster', '/video/hero-poster.webp');
-  expect(await video.evaluate((v: HTMLVideoElement) => v.muted && v.loop && v.playsInline)).toBe(true);
-  await expect(page.locator('#hero [data-hero-card]')).toHaveCount(2);
+  await expect(page.locator('#hero video')).toHaveCount(0);
+  await expect(page.locator('#hero img[fetchpriority="high"]')).toHaveCount(1);
+  await expect(page.locator('#hero [data-hero-card]:visible')).toHaveCount(2);
   const h1 = await page.locator('h1').boundingBox();
   const lines = Math.round(h1!.height / 72 / 1.02);
   expect(lines).toBeLessThanOrEqual(4);
@@ -24,9 +22,9 @@ test('landing on an anchor deep in the page works with lazy sections', async ({ 
 
 test.describe('reduced motion', () => {
   test.use({ reducedMotion: 'reduce' });
-  test('poster image instead of video; nothing animates', async ({ page }) => {
+  test('copy is in place immediately', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('#hero video')).toHaveCount(0);
-    await expect(page.locator('#hero img[src="/video/hero-poster.webp"]')).toHaveCount(1);
+    const o = await page.locator('#hero [data-copy]').first().evaluate((el) => getComputedStyle(el).opacity);
+    expect(o).toBe('1');
   });
 });

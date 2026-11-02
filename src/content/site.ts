@@ -14,7 +14,7 @@ export const site = {
     label: 'Székesfehérvár III. és IV. bányatelek',
     h1: 'Zúzottkő és útalap, közvetlenül a székesfehérvári bányából.',
     cards: [
-      { label: 'Termékek', href: '#termekek', photo: '/photo/frac-8-16.webp', alt: 'Zúzottkő frakció közelről' },
+      { label: 'Termékek', href: '#termekek', photo: '/photo/frac-8-16.webp', alt: 'Zúzottkő 8/16 frakció' },
       { label: 'Szolgáltatások', href: '#szolgaltatasok', photo: '/photo/loading.webp', alt: 'Rakodógép tölti a billencset' },
     ],
     sub: 'Minőségi kőanyag útépítéshez, betongyártáshoz és tereprendezéshez. Saját rakodás, hitelesített mérlegelés, rövid határidő.',

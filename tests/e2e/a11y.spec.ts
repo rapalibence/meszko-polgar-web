@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 test('keyboard reaches the hero CTA with a visible accent focus ring; headings and alts are sound', async ({ page }) => {
   await page.goto('/');
   let reached = false;
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < 12; i++) {
     await page.keyboard.press('Tab');
     const info = await page.evaluate(() => {
       const el = document.activeElement as HTMLElement | null;

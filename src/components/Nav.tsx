@@ -116,7 +116,7 @@ export function Nav() {
         inert={!open}
         data-menu
         className="fixed inset-0 z-50 bg-dark text-dark-ink transition-opacity duration-[240ms]"
-        style={{ opacity: open ? 1 : 0, pointerEvents: open ? 'auto' : 'none', transitionTimingFunction: 'var(--ease)' }}
+        style={{ opacity: open ? 1 : 0, visibility: open ? 'visible' : 'hidden', transitionProperty: 'opacity, visibility', transitionTimingFunction: 'var(--ease)' }}
       >
         <div className="mx-auto flex h-[72px] max-w-[1400px] items-center justify-between px-5 md:px-8">
           <span className="text-[18px] font-semibold">{site.brand} <span className="opacity-70 font-normal">{site.brandSuffix}</span></span>

@@ -27,62 +27,15 @@
   ]
  },
  {
-  "file": "frac-0-4",
-  "unsplash_id": "1701378957345-58d5e04f32f1",
-  "page": "https://unsplash.com/photos/a-close-up-view-of-small-gray-gravel-stones-pSU-HwaCvoQ",
-  "size": [
-   1400,
-   932
-  ]
- },
- {
-  "file": "frac-4-8",
-  "unsplash_id": "1704175970211-4c2c15b18328",
-  "page": "https://unsplash.com/photos/a-close-up-of-a-pile-of-rocks-_4wPdjTGIl8",
-  "size": [
-   1400,
-   1050
-  ]
- },
- {
-  "file": "frac-8-16",
-  "unsplash_id": "1656006853216-174441e11629",
-  "page": "https://unsplash.com/photos/a-large-pile-of-small-rocks-Eq_zEG91mjk",
-  "size": [
-   1400,
-   1050
-  ]
- },
- {
-  "file": "frac-16-32",
-  "unsplash_id": "1667579196837-0ee2d9aaaa7d",
-  "page": "https://unsplash.com/photos/a-close-up-of-some-rocks-w6g1LxX_EKI",
-  "size": [
-   1400,
-   2100
-  ]
- },
- {
-  "file": "frac-0-32",
-  "unsplash_id": "1757029509061-0de8c8d3ae4b",
-  "page": "https://unsplash.com/photos/a-pile-of-small-gray-rocks-and-pebbles-yJjF7hiKsdY",
-  "size": [
-   1400,
-   919
-  ]
- },
- {
-  "file": "boulders",
-  "unsplash_id": "1620914695139-9507be60a425",
-  "page": "https://unsplash.com/photos/s/photos/crushed-stone",
-  "size": [
-   1400,
-   933
-  ]
- },
- {
-  "file": "truck-cut",
-  "derived_from": "truck-road",
-  "note": "background removed (rembg), duotone"
+  "files": [
+   "frac-0-4",
+   "frac-4-8",
+   "frac-8-16",
+   "frac-16-32",
+   "frac-0-32",
+   "boulders",
+   "hero-plant"
+  ],
+  "source": "Generated with Higgsfield (gpt_image_2_5) as placeholders until the client photographs the real fractions"
  }
 ]

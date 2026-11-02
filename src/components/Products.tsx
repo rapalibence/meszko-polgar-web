@@ -45,7 +45,7 @@ export function Products() {
                       <div>
                         <div className="pb-6">
                           <p className="max-w-[52ch] text-[16px] text-dark-ink/75">{p.use}</p>
-                          <div className="mt-4 aspect-[16/10] overflow-hidden md:hidden">
+                          <div className="mt-4 aspect-[4/3] overflow-hidden md:hidden">
                             <img src={p.photo.replace('.webp', '-sm.webp')} alt={`${p.name}, ${p.range}`} loading="lazy" decoding="async" className="h-full w-full object-cover" />
                           </div>
                           <a href="#kapcsolat" className="mt-5 inline-flex items-center gap-2 text-[15px] font-semibold text-dark-ink">
@@ -62,7 +62,7 @@ export function Products() {
           </div>
 
           <div className="hidden md:col-span-5 md:block">
-            <div data-product-photo className="sticky top-24 aspect-[4/5] overflow-hidden bg-dark-raised">
+            <div data-product-photo className="sticky top-24 aspect-[4/3] overflow-hidden bg-dark-raised">
               {products.map((p, i) => (
                 <img
                   key={p.slug}

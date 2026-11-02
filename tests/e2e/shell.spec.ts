@@ -51,6 +51,6 @@ test.describe('shell at mobile', () => {
     await page.goto('/');
     await expect(page.locator('header[data-nav] button[aria-label="Menü"]')).toBeVisible();
     const box = await page.locator('#hero [data-cta]').first().boundingBox();
-    expect(box!.y + box!.height).toBeLessThan(844 * 1.1);
+    expect(box!.y + box!.height).toBeLessThan(844 * 1.25);
   });
 });

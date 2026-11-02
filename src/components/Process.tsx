@@ -35,9 +35,9 @@ export function Process() {
               <div className="h-px w-full bg-hairline" aria-hidden="true">
                 <div data-rule className="h-px w-full bg-ink" />
               </div>
-              <div className="flex items-baseline justify-between pt-4 font-mono text-[12px] text-stone tabular-nums">
+              <div className="flex items-baseline justify-between gap-3 pt-4 font-mono text-[12px] text-stone tabular-nums">
                 <span>{String(i + 1).padStart(2, '0')}</span>
-                <span>{s.depthM === 0 ? '0 m' : `-${s.depthM} m`}</span>
+                <span className="truncate">{s.meta}</span>
               </div>
               <h3 className="mt-4 text-[22px] font-semibold text-ink">{s.title}</h3>
               <p className="mt-3 text-[15px] text-stone">{s.body}</p>

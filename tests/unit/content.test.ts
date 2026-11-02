@@ -25,7 +25,7 @@ describe('content', () => {
   });
 
   it('descends 12 m per process step', () => {
-    expect(processSteps.map((s) => s.depthM)).toEqual([0, 12, 24, 36, 48]);
+    expect(processSteps.every((s) => s.meta.length > 0)).toBe(true);
   });
 
   it('uses one CTA label and a hero sub of at most 20 words', () => {

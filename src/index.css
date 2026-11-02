@@ -120,9 +120,9 @@
 /* Marquee: 40px/s, linear, pauses on hover (pointer devices). */
 
 /* Photo wipe reveal. */
-.reveal-photo { opacity: 0; transform: scale(1.04); transition: opacity 700ms var(--ease), transform 1100ms var(--ease); will-change: transform, opacity; }
-.reveal-photo.is-in { opacity: 1; transform: none; }
-@media (prefers-reduced-motion: reduce) { .reveal-photo { opacity: 1; transform: none; transition: none; } }
+.reveal-photo { opacity: 0; transition: opacity 600ms var(--ease); }
+.reveal-photo.is-in { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .reveal-photo { opacity: 1; transition: none; } }
 
 
 /* Dashed editorial divider (Bumi). */
@@ -137,7 +137,7 @@ html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-stopped { overflow: hidden; }
 
 /* Accordion body: grid-rows is the one layout property we animate; it is tiny and local. */
-.acc { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 320ms var(--ease); }
+.acc { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 260ms var(--ease); }
 .acc[data-open='true'] { grid-template-rows: 1fr; }
 .acc > div { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) { .acc { transition: none; } }

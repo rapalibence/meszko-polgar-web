@@ -9,7 +9,7 @@ export function StickyCta() {
     <div
       data-sticky-cta
       aria-hidden={heroVisible}
-      className="fixed inset-x-0 bottom-0 z-30 border-t border-hairline bg-bg/95 p-3 backdrop-blur transition-transform duration-300 md:hidden"
+      className="fixed inset-x-0 bottom-0 z-30 border-t border-hairline bg-bg p-3 transition-transform duration-300 md:hidden"
       style={{ transform: heroVisible ? 'translateY(100%)' : 'translateY(0)', transitionTimingFunction: 'var(--ease)', paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}
     >
       <ButtonLink href="#kapcsolat" data-cta className="w-full" tabIndex={heroVisible ? -1 : 0}>{site.cta}</ButtonLink>
