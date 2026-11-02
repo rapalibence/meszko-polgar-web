@@ -105,3 +105,23 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Marquee: 40px/s, linear, pauses on hover (pointer devices). */
+.marquee-track {
+  animation: marquee var(--marquee-duration, 60s) linear infinite;
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@media (hover: hover) and (pointer: fine) {
+  [data-marquee]:hover .marquee-track { animation-play-state: paused; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
+}
+
+/* Photo wipe reveal. */
+.reveal-clip { clip-path: inset(0 0 100% 0); transition: clip-path var(--dur-reveal) var(--ease); }
+.reveal-clip.is-in { clip-path: inset(0 0 0 0); }
+@media (prefers-reduced-motion: reduce) { .reveal-clip { clip-path: inset(0 0 0 0); } }

@@ -31,7 +31,7 @@ export const site = {
       'Tájrendezési terv szerinti művelés',
       '[CE / minőségi tanúsítvány]',
     ],
-    photoSeed: 'quarry-aerial-benches',
+    photo: '/img/contours.jpg',
   },
   process: {
     h2: 'A kőtől a fuvarig',

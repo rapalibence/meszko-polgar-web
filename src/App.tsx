@@ -3,6 +3,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Nav } from './components/Nav';
 import { Hero } from './components/Hero';
 import { Footer } from './components/Footer';
+import { Marquee } from './components/Marquee';
+import { Products } from './components/Products';
 import { Legal } from './pages/Legal';
 
 const PitScene = lazy(() => import('./three/PitScene').then((m) => ({ default: m.PitScene })));
@@ -16,6 +18,8 @@ function Home() {
       <Nav />
       <main className="relative z-10">
         <Hero />
+        <Marquee />
+        <Products />
       </main>
       <div className="relative z-10">
         <Footer />
