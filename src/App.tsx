@@ -1,4 +1,4 @@
-import { lazy, Suspense, useLayoutEffect } from 'react';
+import { lazy, Suspense, useEffect, useLayoutEffect, useState } from 'react';
 import { useLenis } from './lib/lenis';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Nav } from './components/Nav';
@@ -42,22 +42,66 @@ function useHashLanding() {
   }, []);
 }
 
+/**
+ * Mount the below-the-fold sections only once the page has loaded (or on the first sign of intent),
+ * so their chunks never race the hero image for bandwidth. A hash landing mounts them at once.
+ */
+function useDeferredSections() {
+  const [ready, setReady] = useState(() => !!window.location.hash || document.readyState === 'complete');
+  useEffect(() => {
+    if (ready) return;
+    const go = () => setReady(true);
+    const intent = ['scroll', 'pointerdown', 'touchstart', 'keydown', 'wheel'] as const;
+    intent.forEach((t) => window.addEventListener(t, go, { once: true, passive: true, capture: true }));
+    window.addEventListener('load', go, { once: true });
+    return () => {
+      intent.forEach((t) => window.removeEventListener(t, go, { capture: true }));
+      window.removeEventListener('load', go);
+    };
+  }, [ready]);
+  // An anchor clicked before its section exists: mount, wait for the element, then jump.
+  useEffect(() => {
+    if (ready) return;
+    const onClick = (e: MouseEvent) => {
+      const a = (e.target as HTMLElement).closest?.('a[href^="#"]') as HTMLAnchorElement | null;
+      if (!a) return;
+      const id = decodeURIComponent(a.getAttribute('href')!.slice(1));
+      if (!id || document.getElementById(id)) return;
+      e.preventDefault();
+      setReady(true);
+      const mo = new MutationObserver(() => {
+        const el = document.getElementById(id);
+        if (el) { mo.disconnect(); el.scrollIntoView(); history.replaceState(null, '', `#${id}`); }
+      });
+      mo.observe(document.body, { childList: true, subtree: true });
+      window.setTimeout(() => mo.disconnect(), 4000);
+    };
+    document.addEventListener('click', onClick, true);
+    return () => document.removeEventListener('click', onClick, true);
+  }, [ready]);
+  return ready;
+}
+
 function Home() {
   useHashLanding();
   useLenis();
+  const ready = useDeferredSections();
+  const placeholder = <div className="min-h-[100dvh] bg-dark" aria-hidden="true" />;
   return (
     <>
       <Nav />
       <main className="relative z-10">
         <Hero />
         <About />
-        <Suspense fallback={<div className="min-h-[100dvh] bg-dark" aria-hidden="true" />}>
-          <Products />
-          <Process />
-          <Services />
-          <Faq />
-          <Contact />
-        </Suspense>
+        {ready ? (
+          <Suspense fallback={placeholder}>
+            <Products />
+            <Process />
+            <Services />
+            <Faq />
+            <Contact />
+          </Suspense>
+        ) : placeholder}
       </main>
       <div className="relative z-10">
         <Footer />

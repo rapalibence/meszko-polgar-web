@@ -3,7 +3,6 @@ import { useRef } from 'react';
 import { site } from '../content/site';
 import { useReveal } from '../lib/gsap';
 import { QuoteForm } from './QuoteForm';
-import { SectionIndex } from './SectionIndex';
 
 const icons = { MapPin, Phone, Envelope, Clock } as const;
 
@@ -14,13 +13,12 @@ export function Contact() {
   return (
     <section id="kapcsolat" ref={ref} className="relative z-10 bg-bg py-20 md:py-28">
       <div className="mx-auto max-w-[1400px] px-5 md:px-8">
-        <SectionIndex n="06" label="Kapcsolat" />
-        <div className="mt-10 flex flex-wrap items-end justify-between gap-6">
+        <div className="flex flex-wrap items-end justify-between gap-6 border-t border-hairline pt-8">
           <div>
             <h2 data-reveal className="text-[clamp(26px,3.2vw,44px)] font-semibold text-ink">{site.contact.h2}</h2>
             <p data-reveal className="mt-4 max-w-[56ch] text-[17px] text-stone">{site.contact.sub}</p>
           </div>
-          <p data-reveal className="inline-flex items-center gap-2 border border-hairline px-3 py-2 font-mono text-[12px] text-ink">
+          <p data-reveal className="inline-flex items-center gap-2 border border-hairline px-3 py-2 text-[14px] text-ink">
             <Clock size={14} aria-hidden="true" /> {site.contact.promise}
           </p>
         </div>
@@ -37,7 +35,7 @@ export function Contact() {
                   <li key={r.label} className="flex items-start gap-4 py-4 first:pt-0">
                     <Icon size={20} weight="regular" className="mt-0.5 shrink-0 text-accent" aria-hidden="true" />
                     <div>
-                      <span className="block font-mono text-[11px] uppercase tracking-[0.12em] text-stone">{r.label}</span>
+                      <span className="block text-[13px] text-stone">{r.label}</span>
                       <span className="text-ink/90">{r.value}</span>
                     </div>
                   </li>

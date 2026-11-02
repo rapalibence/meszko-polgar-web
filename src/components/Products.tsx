@@ -1,10 +1,9 @@
-import { ArrowRight, Minus, Plus } from '@phosphor-icons/react';
+import { ArrowRight, Plus } from '@phosphor-icons/react';
 import { useRef, useState } from 'react';
 import { products } from '../content/products';
 import { site } from '../content/site';
 import { useReveal } from '../lib/gsap';
 import { cn } from '../lib/cn';
-import { SectionIndex } from './SectionIndex';
 
 /**
  * Fraction accordion on dark (Cominvi fleet). One row open at a time; the sticky photo on the
@@ -17,8 +16,7 @@ export function Products() {
   return (
     <section id="termekek" ref={ref} className="relative z-10 bg-dark py-20 text-dark-ink md:py-28">
       <div className="mx-auto max-w-[1400px] px-5 md:px-8">
-        <SectionIndex n="02" label="Termékek" dark />
-        <div className="mt-10 grid gap-10 md:grid-cols-12 md:gap-8">
+        <div className="grid gap-10 border-t border-dark-hairline pt-8 md:grid-cols-12 md:gap-8">
           <div className="md:col-span-7">
             <h2 data-reveal className="text-[clamp(26px,3.2vw,44px)] font-semibold">{site.products.h2}</h2>
             <p data-reveal className="mt-4 max-w-[56ch] text-[17px] text-dark-ink/70">{site.products.intro}</p>
@@ -38,7 +36,7 @@ export function Products() {
                       <span className={cn('text-[20px] font-semibold transition-colors md:text-[24px]', isOpen ? 'text-dark-ink' : 'text-dark-ink/80')}>{p.name}</span>
                       <span className="font-mono text-[12px] text-dark-ink/60 tabular-nums">{p.range}</span>
                       <span className="flex h-8 w-8 items-center justify-center border border-dark-hairline text-dark-ink">
-                        {isOpen ? <Minus size={14} weight="bold" aria-hidden="true" /> : <Plus size={14} weight="bold" aria-hidden="true" />}
+                        <Plus size={14} weight="bold" aria-hidden="true" className={cn('transition-transform duration-200 [transition-timing-function:var(--ease)]', isOpen && 'rotate-45')} />
                       </span>
                     </button>
                     <div id={`frac-${p.slug}`} className="acc" data-open={isOpen ? 'true' : 'false'}>

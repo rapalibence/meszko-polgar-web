@@ -1,41 +1,18 @@
 [
  {
-  "file": "hero-quarry",
-  "unsplash_id": "1664565262236-65166affe34a",
-  "page": "https://unsplash.com/photos/a-large-rocky-mountain-6LNv5BmYuvI",
-  "size": [
-   2400,
-   1600
-  ]
- },
- {
-  "file": "truck-road",
-  "unsplash_id": "1686945127170-ae15deda7bcc",
-  "page": "https://unsplash.com/photos/an-orange-dump-truck-driving-down-a-dirt-road-yz9HkvfvKbA",
-  "size": [
-   2000,
-   1333
-  ]
- },
- {
-  "file": "loading",
-  "unsplash_id": "1653924323287-127daf6e6937",
-  "page": "https://unsplash.com/photos/a-dump-truck-dumping-dirt-into-a-pile--L579XCtBiU",
-  "size": [
-   1800,
-   1195
-  ]
- },
- {
   "files": [
+   "hero-plant",
+   "about-bench",
+   "loading",
+   "haul",
+   "weighbridge",
    "frac-0-4",
    "frac-4-8",
    "frac-8-16",
    "frac-16-32",
    "frac-0-32",
-   "boulders",
-   "hero-plant"
+   "boulders"
   ],
-  "source": "Generated with Higgsfield (gpt_image_2_5) as placeholders until the client photographs the real fractions"
+  "source": "Generated with Higgsfield (gpt_image_2_5) as placeholders until the client photographs the real quarry and fractions"
  }
 ]

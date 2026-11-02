@@ -69,11 +69,11 @@ export function Nav() {
         style={{ transitionTimingFunction: 'var(--ease)' }}
       >
         <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between px-5 md:px-8">
-          <a href="#hero" className="text-[18px] font-semibold leading-none tracking-[-0.01em] text-current">
-            {site.brand} <span className="opacity-70 font-normal">{site.brandSuffix}</span>
+          <a href="#hero" className="whitespace-nowrap text-[18px] font-semibold leading-none tracking-[-0.01em] text-current">
+            {site.brand} <span className="opacity-90 font-normal">{site.brandSuffix}</span>
           </a>
 
-          <nav aria-label="Fő navigáció" className="hidden md:flex items-center gap-7">
+          <nav aria-label="Fő navigáció" className="hidden lg:flex items-center gap-7">
             {site.nav.map((n) => (
               <a
                 key={n.href}
@@ -127,9 +127,8 @@ export function Nav() {
         </div>
         <div className="mx-auto grid max-w-[1400px] gap-12 px-5 pt-10 md:grid-cols-12 md:px-8 md:pt-20">
           <nav aria-label="Menü" className="md:col-span-7">
-            {site.nav.map((n, i) => (
-              <a key={n.href} href={n.href} onClick={() => setOpen(false)} className="group flex items-baseline gap-5 border-b border-dark-hairline py-4 md:py-6">
-                <span className="font-mono text-[12px] text-dark-ink/50 tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+            {site.nav.map((n) => (
+              <a key={n.href} href={n.href} onClick={() => setOpen(false)} className="group flex items-baseline border-b border-dark-hairline py-4 md:py-6">
                 <span className="text-[32px] font-semibold md:text-[48px]">{n.label}</span>
               </a>
             ))}
@@ -138,7 +137,7 @@ export function Nav() {
             <ul className="space-y-4 text-[15px] text-dark-ink/80">
               {site.contact.rows.map((r) => (
                 <li key={r.label}>
-                  <span className="block font-mono text-[11px] uppercase tracking-[0.12em] text-dark-ink/50">{r.label}</span>
+                  <span className="block text-[13px] text-dark-ink/60">{r.label}</span>
                   {r.value}
                 </li>
               ))}

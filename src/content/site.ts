@@ -28,6 +28,7 @@ export const site = {
     { value: '[60]', label: 'km-es szállítási körzet', numeric: null },
     { value: '7', label: 'terasz', numeric: 7 },
     { value: '14 m', label: 'bányamélység', numeric: null },
+    { value: 'III. és IV.', label: 'bányatelek, Székesfehérvár', numeric: null },
   ],
   about: {
     h2: 'Székesfehérvári bánya, helyi csapat, több mint egy évtized.',
@@ -38,7 +39,7 @@ export const site = {
       'Tájrendezési terv szerinti művelés',
       '[CE / minőségi tanúsítvány]',
     ],
-    photo: '/photo/hero-quarry.webp',
+    photo: '/photo/about-bench.webp',
   },
   process: {
     h2: 'A kőtől a fuvarig',
@@ -58,7 +59,7 @@ export const site = {
     open: 'Menü',
     close: 'Bezárás',
   },
-  footer_credit: 'Fotók: Unsplash (ideiglenes, a saját fotókig).',
+  footer_credit: 'A képek ideiglenesek, a saját fotókig.',
   products: {
     h2: 'Frakciók és felhasználás',
     intro: 'Az alábbi frakciók érhetők el a telephelyen. Egyedi igénnyel keressen minket.',

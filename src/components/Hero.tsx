@@ -37,21 +37,25 @@ export function Hero() {
     <section id="hero" ref={ref} className="relative bg-dark text-dark-ink">
       {/* Photo band */}
       <div className="relative h-[56dvh] min-h-[360px] md:h-[68dvh] md:min-h-[520px]">
-        <img
-          src="/photo/hero-plant.webp"
-          srcSet="/photo/hero-plant-sm.webp 1200w, /photo/hero-plant.webp 2400w"
-          sizes="100vw"
-          width={2400}
-          height={1343}
-          alt="Mészkő bányafal, előtte törő-osztályozó üzem és depók"
-          fetchPriority="high"
-          decoding="async"
-          className="h-full w-full object-cover object-[60%_50%]"
-        />
+        {/* Phones get the 800w cut (62 kB) so the LCP lands early on 4G; the scrim hides the softness. */}
+        <picture>
+          <source media="(max-width: 640px)" srcSet="/photo/hero-plant-xs.webp" />
+          <img
+            src="/photo/hero-plant.webp"
+            srcSet="/photo/hero-plant-sm.webp 1200w, /photo/hero-plant.webp 2400w"
+            sizes="100vw"
+            width={2400}
+            height={1343}
+            alt="Mészkő bányafal, előtte törő-osztályozó üzem és depók"
+            fetchPriority="high"
+            decoding="async"
+            className="h-full w-full object-cover object-[60%_50%]"
+          />
+        </picture>
         <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-dark/60 via-dark/10 via-40% to-transparent" />
-        <div aria-hidden="true" className="absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-dark/60 to-transparent" />
+        <div aria-hidden="true" className="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-dark/75 to-transparent" />
         {/* Link cards, desktop: bottom-right of the photo */}
-        <div data-copy className="absolute bottom-6 right-5 hidden grid-cols-2 gap-3 md:right-8 md:grid md:w-[420px]">
+        <div data-copy className="absolute bottom-6 right-8 hidden grid-cols-2 gap-3 lg:grid lg:w-[420px]">
           {site.hero.cards.map((c) => (
             <HeroCard key={c.href} {...c} />
           ))}
@@ -60,9 +64,8 @@ export function Hero() {
 
       {/* Panel riding over the photo's lower-left edge */}
       <div className="relative mx-auto max-w-[1400px] px-0 md:px-8">
-        <div data-copy className="relative -mt-0 bg-dark px-5 pb-10 pt-8 md:-mt-[200px] md:max-w-[640px] md:px-10 md:pb-10 md:pt-9">
-          <p className="font-mono text-[12px] uppercase tracking-[0.14em] text-dark-ink/70">{site.hero.label}</p>
-          <h1 className="mt-4 max-w-[16ch] text-[clamp(30px,3.9vw,52px)] text-dark-ink">{site.hero.h1}</h1>
+        <div data-copy className="relative -mt-0 bg-dark px-5 pb-10 pt-8 md:-mt-[200px] md:max-w-[640px] md:px-10 md:pb-10 md:pt-9 md:mb-6 lg:mb-0">
+          <h1 className="max-w-[16ch] text-[clamp(30px,3.9vw,52px)] text-dark-ink">{site.hero.h1}</h1>
           <p className="mt-5 max-w-[46ch] text-[16px] text-dark-ink/75">{site.hero.sub}</p>
           <div className="mt-7 flex flex-wrap gap-3">
             <ButtonLink href="#kapcsolat" data-cta>{site.cta}</ButtonLink>
@@ -70,7 +73,7 @@ export function Hero() {
           </div>
         </div>
         {/* Link cards, phones: 2-up under the panel */}
-        <div data-copy className="grid grid-cols-2 gap-3 px-5 pb-8 md:hidden">
+        <div data-copy className="grid grid-cols-2 gap-3 px-5 pb-8 md:px-0 lg:hidden">
           {site.hero.cards.map((c) => (
             <HeroCard key={c.href} {...c} />
           ))}
@@ -84,7 +87,7 @@ function HeroCard({ href, label, photo, alt }: { href: string; label: string; ph
   return (
     <a href={href} data-hero-card className="group relative aspect-[4/3] overflow-hidden bg-dark-raised">
       <img src={photo.replace('.webp', '-sm.webp')} alt={alt} loading="lazy" decoding="async" className="h-full w-full object-cover opacity-85" />
-      <span className="absolute inset-x-2 bottom-2 flex items-center justify-between bg-dark/85 px-3 py-2 font-mono text-[11px] uppercase tracking-[0.12em] text-dark-ink">
+      <span className="absolute inset-x-2 bottom-2 flex items-center justify-between bg-dark/90 px-3 py-2 text-[13px] font-semibold text-dark-ink">
         {label}
         <ArrowRight size={14} weight="bold" aria-hidden="true" className="transition-transform duration-200 group-hover:[@media(hover:hover)_and_(pointer:fine)]:translate-x-0.5" />
       </span>
