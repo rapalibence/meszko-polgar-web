@@ -72,13 +72,12 @@ export function Process() {
                 data-step
                 data-index={i}
                 data-active={active === i ? 'true' : undefined}
-                className={cn('row-dashed row-dashed-dark grid grid-cols-[64px_1fr] gap-4 py-8 transition-opacity duration-500 md:py-10', active === i ? 'opacity-100' : 'opacity-50')}
-                style={{ transitionTimingFunction: 'var(--ease)' }}
+                className="row-dashed row-dashed-dark grid grid-cols-[64px_1fr] gap-4 py-8 md:py-10"
               >
-                <span className="font-mono text-[13px] text-accent tabular-nums pt-1">{s.depthM === 0 ? '0 m' : `-${s.depthM} m`}</span>
-                <div>
+                <span className="font-mono text-[13px] text-accent-light tabular-nums pt-1">{s.depthM === 0 ? '0 m' : `-${s.depthM} m`}</span>
+                <div className={cn('transition-opacity duration-500', active === i ? 'opacity-100' : 'opacity-75')} style={{ transitionTimingFunction: 'var(--ease)' }}>
                   <h3 className="font-display text-3xl font-bold uppercase leading-none md:text-4xl">{s.title}</h3>
-                  <p className="mt-3 max-w-[48ch] text-[16px] text-dark-ink/70">{s.body}</p>
+                  <p className="mt-3 max-w-[48ch] text-[16px] text-dark-ink/85">{s.body}</p>
                 </div>
               </li>
             ))}

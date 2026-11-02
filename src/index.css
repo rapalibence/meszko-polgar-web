@@ -23,6 +23,7 @@
   --accent: #D9521A;
   --accent-hover: #E4601F;
   --accent-deep: #A83E12;
+  --accent-light: #F0742F;
   --dark: #0E0D09;
   --dark-ink: #F4F1EA;
   --dark-hairline: rgba(244, 241, 234, 0.16);
@@ -47,6 +48,7 @@
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
   --color-accent-deep: var(--accent-deep);
+  --color-accent-light: var(--accent-light);
   --color-dark: var(--dark);
   --color-dark-ink: var(--dark-ink);
   --color-dark-hairline: var(--dark-hairline);
