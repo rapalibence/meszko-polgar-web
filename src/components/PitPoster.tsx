@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { cn } from '../lib/cn';
 
-type Props = { className?: string; id?: string };
+type Props = { className?: string; id?: string; /** Override the viewBox fit (default: anchored bottom, right on phones). */ fit?: string };
 
 /**
  * Flat, layered cross-section of the quarry. Horizontal rock strata, a stepped pit cut into
@@ -9,7 +9,7 @@ type Props = { className?: string; id?: string };
  * `data-layer` 0..5 (sky, far wall, strata, machines, dust, ledge) so GSAP can move them
  * independently. Pure SVG, no raster, no filters.
  */
-export function PitPoster({ className, id }: Props) {
+export function PitPoster({ className, id, fit }: Props) {
   const [narrow, setNarrow] = useState(false);
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 767px)');
@@ -24,7 +24,7 @@ export function PitPoster({ className, id }: Props) {
       id={id}
       data-poster
       viewBox="0 0 1440 900"
-      preserveAspectRatio={narrow ? 'xMaxYMax slice' : 'xMidYMax slice'}
+      preserveAspectRatio={fit ?? (narrow ? 'xMaxYMax slice' : 'xMidYMax slice')}
       aria-hidden="true"
       focusable="false"
       className={cn('block h-full w-full', className)}

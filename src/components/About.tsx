@@ -34,7 +34,7 @@ export function About() {
             </ul>
           </div>
           <div data-reveal className="md:col-span-5 md:col-start-8 relative">
-            <div className="aspect-[3/4] overflow-hidden bg-sky" role="img" aria-label="A bánya teraszainak metszete"><PitPoster /></div>
+            <div className="aspect-[3/4] overflow-hidden bg-sky" role="img" aria-label="A bánya teraszainak metszete"><PitPoster fit="xMidYMid slice" /></div>
             {[30, 55, 80].map((p) => (
               <div key={p} aria-hidden="true" className="pointer-events-none absolute inset-x-0 h-px bg-accent/80" style={{ top: `${p}%` }} />
             ))}
