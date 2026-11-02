@@ -114,7 +114,7 @@ export function PitScene() {
           <CameraRig depth={PIT_OPTIONS.depth} reducedMotion={reducedMotion} />
         </Canvas>
       ) : (
-        <img src="/pit-fallback.png" alt="" className="h-full w-full object-cover opacity-80" />
+        <img src="/pit-fallback.jpg" alt="" className="h-full w-full object-cover opacity-80" />
       )}
     </div>
   );
