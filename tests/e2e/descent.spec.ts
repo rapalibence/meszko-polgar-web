@@ -47,6 +47,14 @@ test.describe('large viewport', () => {
   });
 });
 
+test.describe('landscape phone', () => {
+  test.use({ viewport: { width: 844, height: 390 } });
+  test('card fits', async ({ page }) => {
+    await page.goto('/');
+    await scrollDescent(page);
+  });
+});
+
 test.describe('reduced motion', () => {
   test.use({ reducedMotion: 'reduce' });
   test('all five titles present without pinning', async ({ page }) => {

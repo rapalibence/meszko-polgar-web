@@ -4,14 +4,4 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  build: {
-    rollupOptions: {
-      output: {
-        manualChunks(id) {
-          if (/node_modules\/(three|@react-three)\//.test(id)) return 'three';
-          return undefined;
-        },
-      },
-    },
-  },
 });

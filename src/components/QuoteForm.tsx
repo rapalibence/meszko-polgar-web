@@ -11,6 +11,10 @@ const f = site.contact.form;
 const field = 'mt-2 h-12 w-full border border-hairline bg-bg px-3 text-ink placeholder:text-stone focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2';
 const label = 'block text-[14px] font-medium text-ink/90';
 
+function Err({ id, msg }: { id: string; msg?: string }) {
+  return msg ? <p id={id} role="alert" className="mt-1 text-[13px] text-accent">{msg}</p> : null;
+}
+
 type Status = 'idle' | 'submitting' | 'success' | 'error';
 
 export function QuoteForm() {
@@ -38,9 +42,6 @@ export function QuoteForm() {
     );
   }
 
-  const Err = ({ id, msg }: { id: string; msg?: string }) =>
-    msg ? <p id={id} role="alert" className="mt-1 text-[13px] text-accent">{msg}</p> : null;
-
   return (
     <form onSubmit={onSubmit} noValidate className="border border-hairline bg-bg-raised p-6 md:p-8" aria-describedby={status === 'error' ? 'form-error' : undefined}>
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
@@ -51,7 +52,8 @@ export function QuoteForm() {
         </div>
         <div>
           <label htmlFor="company" className={label}>{f.company}</label>
-          <input id="company" autoComplete="organization" className={field} {...register('company')} />
+          <input id="company" autoComplete="organization" maxLength={120} className={cn(field, errors.company && 'border-accent')} aria-invalid={!!errors.company} aria-describedby="company-err" {...register('company')} />
+          <Err id="company-err" msg={errors.company?.message} />
         </div>
         <div>
           <label htmlFor="phone" className={label}>{f.phone} *</label>
@@ -64,8 +66,8 @@ export function QuoteForm() {
           <Err id="email-err" msg={errors.email?.message} />
         </div>
         <div>
-          <label htmlFor="product" className={label}>{f.product}</label>
-          <select id="product" className={cn(field, 'appearance-none', errors.product && 'border-accent')} aria-invalid={!!errors.product} aria-describedby="product-err" defaultValue="" {...register('product')}>
+          <label htmlFor="product" className={label}>{f.product} *</label>
+          <select id="product" className={cn(field, 'appearance-none bg-no-repeat bg-[right_12px_center] bg-[length:12px_12px] pr-9', errors.product && 'border-accent')} style={{ backgroundImage: "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'><path d='M2 4l4 4 4-4' fill='none' stroke='%23A9A295' stroke-width='1.5'/></svg>\")" }} aria-invalid={!!errors.product} aria-describedby="product-err" defaultValue="" {...register('product')}>
             <option value="" disabled>{f.productPlaceholder}</option>
             {products.map((p) => <option key={p.slug} value={p.slug}>{p.name}</option>)}
             <option value="egyeb">{f.productOther}</option>
@@ -74,20 +76,26 @@ export function QuoteForm() {
         </div>
         <div>
           <label htmlFor="quantityT" className={label}>{f.quantity}</label>
-          <input id="quantityT" type="number" min={1} inputMode="numeric" className={field} {...register('quantityT')} />
+          <input id="quantityT" type="number" min={1} inputMode="numeric" className={cn(field, errors.quantityT && 'border-accent')} aria-invalid={!!errors.quantityT} aria-describedby="quantity-err" {...register('quantityT')} />
+          <Err id="quantity-err" msg={errors.quantityT?.message} />
         </div>
         <div className="sm:col-span-2">
           <label htmlFor="address" className={label}>{f.address}</label>
-          <input id="address" autoComplete="street-address" className={field} {...register('address')} />
+          <input id="address" autoComplete="street-address" maxLength={200} className={cn(field, errors.address && 'border-accent')} aria-invalid={!!errors.address} aria-describedby="address-err" {...register('address')} />
+          <Err id="address-err" msg={errors.address?.message} />
         </div>
         <div className="sm:col-span-2">
           <label htmlFor="note" className={label}>{f.note}</label>
-          <textarea id="note" rows={4} className={cn(field, 'h-auto py-3')} {...register('note')} />
+          <textarea id="note" rows={4} maxLength={1000} className={cn(field, 'h-auto py-3', errors.note && 'border-accent')} aria-invalid={!!errors.note} aria-describedby="note-err" {...register('note')} />
+          <Err id="note-err" msg={errors.note?.message} />
         </div>
         <div className="sm:col-span-2">
           <label className="flex items-start gap-3 text-[15px] text-ink/90">
-            <input type="checkbox" className="mt-1 h-4 w-4 accent-accent" aria-describedby="consent-err" {...register('consent')} />
-            <span>{f.consent} *</span>
+            <input type="checkbox" className="mt-1 h-4 w-4 accent-accent" aria-invalid={!!errors.consent} aria-describedby="consent-err" {...register('consent')} />
+            <span>
+              {f.consent.replace('az adatkezelési tájékoztatót', '')}
+              <a href="/adatkezeles" target="_blank" rel="noopener" className="underline underline-offset-4 text-ink">az adatkezelési tájékoztatót</a> *
+            </span>
           </label>
           <Err id="consent-err" msg={errors.consent?.message} />
         </div>

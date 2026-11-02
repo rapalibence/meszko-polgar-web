@@ -30,6 +30,16 @@ describe('quoteSchema', () => {
   it('rejects an invalid e-mail', () => {
     expect(messages(quoteSchema.safeParse({ ...valid, email: 'x' }))).toContain('Érvénytelen e-mail-cím');
   });
+  it('accepts common Hungarian phone formats', () => {
+    for (const phone of ['+36 30 123 45 67', '06-30/123-4567', '+36 (30) 123 4567', '0036 30 123 4567', '30 123 4567']) {
+      expect(quoteSchema.safeParse({ ...valid, phone }).success, phone).toBe(true);
+    }
+  });
+  it('gives Hungarian messages for quantity and length violations', () => {
+    expect(messages(quoteSchema.safeParse({ ...valid, quantityT: 0 }))).toContain('Legalább 1 tonna');
+    expect(messages(quoteSchema.safeParse({ ...valid, note: 'x'.repeat(1001) }))).toContain('Legfeljebb 1000 karakter');
+    expect(messages(quoteSchema.safeParse({ ...valid, name: 'K' }))).toContain('Legalább 2 karakter');
+  });
   it('names required fields', () => {
     expect(messages(quoteSchema.safeParse({ ...valid, name: '' }))).toContain('Kötelező mező');
   });

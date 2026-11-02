@@ -1,23 +1,39 @@
 import { z } from 'zod';
-import { products } from '../content/products';
+import { products } from '../content/products.js';
 
 export const REQUIRED = 'Kötelező mező';
 export const INVALID_EMAIL = 'Érvénytelen e-mail-cím';
 export const INVALID_PHONE = 'Érvénytelen telefonszám';
 export const CONSENT_REQUIRED = 'El kell fogadnia az adatkezelési tájékoztatót';
+export const MIN_NAME = 'Legalább 2 karakter';
+export const MIN_QTY = 'Legalább 1 tonna';
+export const MAX_NOTE = 'Legfeljebb 1000 karakter';
+export const MAX_SHORT = 'Legfeljebb 200 karakter';
 
-const PHONE = /^(\+36|06)[\s-]?\d{1,2}[\s-]?\d{3}[\s-]?\d{3,4}$/;
+/** Accepts +36 / 06 / 0036 prefixes or none, with spaces, hyphens, slashes and brackets. */
+export function normalizePhone(raw: string): string {
+  return raw.replace(/[\s\-/().]/g, '');
+}
+const PHONE_DIGITS = /^(\+36|06|0036)?\d{8,9}$/;
+
 const productSlugs = ['egyeb', ...products.map((p) => p.slug)] as [string, ...string[]];
 
+const optionalText = (max: number, msg: string) =>
+  z.string().trim().max(max, msg).optional().or(z.literal(''));
+
 export const quoteSchema = z.object({
-  name: z.string().trim().min(2, REQUIRED),
-  company: z.string().trim().max(120).optional().or(z.literal('')),
-  phone: z.string().trim().min(1, REQUIRED).regex(PHONE, INVALID_PHONE),
+  name: z.string().trim().min(1, REQUIRED).min(2, MIN_NAME).max(120, MAX_SHORT),
+  company: optionalText(120, MAX_SHORT),
+  phone: z
+    .string()
+    .trim()
+    .min(1, REQUIRED)
+    .refine((v) => PHONE_DIGITS.test(normalizePhone(v)), INVALID_PHONE),
   email: z.string().trim().min(1, REQUIRED).email(INVALID_EMAIL),
   product: z.enum(productSlugs, { message: REQUIRED }),
-  quantityT: z.coerce.number().min(1).optional().or(z.literal('')),
-  address: z.string().trim().max(200).optional().or(z.literal('')),
-  note: z.string().trim().max(1000).optional().or(z.literal('')),
+  quantityT: z.union([z.literal(''), z.coerce.number().min(1, MIN_QTY)]).optional(),
+  address: optionalText(200, MAX_SHORT),
+  note: optionalText(1000, MAX_NOTE),
   consent: z.literal(true, { message: CONSENT_REQUIRED }),
 });
 

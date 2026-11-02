@@ -20,17 +20,23 @@ export function Nav() {
     return () => io.disconnect();
   }, []);
 
-  // Active section.
+  // Active section: track the set of nav sections crossing the viewport's middle band;
+  // when none does (hero, descent, footer) no link is underlined.
   useEffect(() => {
     const ids = site.nav.map((n) => n.href.slice(1));
     const els = ids.map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
     if (!els.length) return;
+    const inView = new Set<string>();
     const io = new IntersectionObserver(
       (entries) => {
-        const hit = entries.filter((e) => e.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (hit) setActive(`#${hit.target.id}`);
+        for (const e of entries) {
+          if (e.isIntersecting) inView.add(e.target.id);
+          else inView.delete(e.target.id);
+        }
+        const first = ids.find((id) => inView.has(id));
+        setActive(first ? `#${first}` : '');
       },
-      { rootMargin: '-40% 0px -50% 0px', threshold: [0, 0.1, 0.5] },
+      { rootMargin: '-40% 0px -50% 0px', threshold: 0 },
     );
     els.forEach((el) => io.observe(el));
     return () => io.disconnect();
@@ -62,6 +68,7 @@ export function Nav() {
               <a
                 key={n.href}
                 href={n.href}
+                data-active={active === n.href ? 'true' : undefined}
                 className={cn(
                   'relative py-1 text-[15px] font-medium text-ink/85 after:absolute after:inset-x-0 after:-bottom-0.5 after:h-0.5 after:bg-accent after:origin-left after:scale-x-0 after:transition-transform after:duration-200',
                   active === n.href && 'after:scale-x-100',

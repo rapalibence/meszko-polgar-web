@@ -26,6 +26,21 @@ test.describe('shell at desktop', () => {
   });
 });
 
+test('nav underline clears when no nav section is in view', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => document.getElementById('termekek')!.scrollIntoView());
+  await page.waitForTimeout(600);
+  await expect(page.locator('header[data-nav] a[data-active="true"]')).toHaveCount(1);
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.waitForTimeout(600);
+  await expect(page.locator('header[data-nav] a[data-active="true"]')).toHaveCount(0);
+  // Mid-descent (#folyamat is not a nav item) nothing should be underlined either.
+  const box = await page.locator('#folyamat').evaluate((el) => ({ top: el.getBoundingClientRect().top + window.scrollY, height: el.getBoundingClientRect().height }));
+  await page.evaluate((y) => window.scrollTo(0, y), box.top + box.height * 0.5);
+  await page.waitForTimeout(800);
+  await expect(page.locator('header[data-nav] a[data-active="true"]')).toHaveCount(0);
+});
+
 test.describe('shell at mobile', () => {
   test.use({ viewport: { width: 390, height: 844 } });
   test('hamburger shown and hero CTA near the fold', async ({ page }) => {

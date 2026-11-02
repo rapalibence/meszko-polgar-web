@@ -16,11 +16,11 @@ const STEPS = processSteps.length;
 function StepCard({ index }: { index: number }) {
   const step = processSteps[index];
   return (
-    <div data-step-card className="w-full max-w-[520px] border border-hairline bg-bg-raised/95 p-6 md:p-8 backdrop-blur-[2px]">
+    <div data-step-card className="w-full max-w-[520px] border border-hairline bg-bg-raised/95 p-5 md:p-8 short:p-4 backdrop-blur-[2px]">
       <span className="font-mono text-[13px] text-accent tabular-nums">{step.depthM === 0 ? '0 m' : `-${step.depthM} m`}</span>
-      <h3 className="mt-3 text-4xl md:text-5xl font-semibold text-ink">{step.title}</h3>
-      <p className="mt-4 text-stone">{step.body}</p>
-      <div className="mt-6 flex gap-1.5" aria-hidden="true">
+      <h3 className="mt-2 md:mt-3 text-3xl md:text-5xl short:text-2xl font-semibold text-ink">{step.title}</h3>
+      <p className="mt-3 md:mt-4 text-[15px] md:text-[17px] short:text-[14px] short:leading-snug text-stone">{step.body}</p>
+      <div className="mt-4 md:mt-6 short:mt-3 flex gap-1.5" aria-hidden="true">
         {processSteps.map((s, i) => (
           <span key={s.slug} className={i <= index ? 'h-0.5 flex-1 bg-accent' : 'h-0.5 flex-1 bg-hairline'} />
         ))}
@@ -79,13 +79,13 @@ export function Descent() {
       <div data-sticky className="sticky top-0 h-[100dvh] overflow-hidden">
         {/* Scrim on the left so the card reads over the pit. */}
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-gradient-to-r from-bg/80 via-bg/30 to-transparent" />
-        <div className="relative mx-auto flex h-full max-w-[1400px] flex-col px-5 md:px-8 pt-[96px] md:pt-[120px] pb-8">
-          <h2 className="text-4xl md:text-5xl text-ink">{site.process.h2}</h2>
+        <div className="relative mx-auto flex h-full max-w-[1400px] flex-col px-5 md:px-8 pt-[92px] md:pt-[112px] short:pt-[76px] pb-6 short:pb-3">
+          <h2 className="text-3xl md:text-5xl short:text-2xl text-ink">{site.process.h2}</h2>
           <div className="flex flex-1 items-center">
             <AnimatePresence mode="wait" initial={false}>
               <motion.div
                 key={active}
-                className="w-full md:w-5/12"
+                className="w-full md:w-5/12 short:w-7/12"
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}

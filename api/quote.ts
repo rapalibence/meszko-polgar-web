@@ -1,4 +1,4 @@
-import { quoteSchema } from '../src/lib/quoteSchema';
+import { quoteSchema } from '../src/lib/quoteSchema.js';
 
 type Req = { method?: string; body?: unknown };
 type Res = {
