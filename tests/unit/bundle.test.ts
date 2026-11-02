@@ -7,8 +7,8 @@ describe('production bundle', () => {
     const html = resolve(process.cwd(), 'dist/index.html');
     if (!existsSync(html)) return; // built in CI before tests
     const src = readFileSync(html, 'utf8');
-    expect(src).not.toMatch(/three/);
+    expect(src).not.toMatch(/three|frames\//);
     const assets = readdirSync(resolve(process.cwd(), 'dist/assets'));
-    expect(assets.some((a) => /three|render/.test(a))).toBe(false);
+    expect(assets.some((a) => /three|framer|render/.test(a))).toBe(false);
   });
 });

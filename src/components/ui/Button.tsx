@@ -1,7 +1,7 @@
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes } from 'react';
 import { cn } from '../../lib/cn';
 
-type Variant = 'primary' | 'outline';
+type Variant = 'primary' | 'outline' | 'ghost';
 
 const base =
   'inline-flex items-center justify-center font-display uppercase tracking-[0.02em] text-[15px] font-semibold ' +
@@ -11,6 +11,7 @@ const base =
 const variants: Record<Variant, string> = {
   primary: 'bg-accent text-dark-ink hover:bg-accent-hover',
   outline: 'border border-ink/60 text-ink hover:border-ink bg-bg/60',
+  ghost: 'border border-dark-ink/50 text-dark-ink hover:border-dark-ink hover:bg-dark-ink/10',
 };
 
 export function buttonClass(variant: Variant = 'primary', extra?: string) {

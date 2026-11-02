@@ -10,18 +10,25 @@
    Spec: docs/superpowers/specs/2026-11-02-meszko-polgar-website-design.md §3
 ------------------------------------------------------------------- */
 :root {
-  --bg: #F2EFE9;
-  --bg-raised: #FAF8F4;
-  --ink: #1B1A18;
-  --stone: #6E685F;
-  --stone-deep: #8B857B;
-  --hairline: rgba(27, 26, 24, 0.14);
+  --bg: #F3EADB;
+  --bg-raised: #FBF6EC;
+  --ink: #15130F;
+  --stone: #8C867A;
+  --stone-deep: #6B655A;
+  --sand: #E9D8B4;
+  --sand-deep: #CDB58A;
+  --rust: #D9521A;
+  --rust-deep: #A83E12;
+  --slate: #4A5A6E;
+  --sky: #1F3A5F;
+  --sky-deep: #14283F;
+  --hairline: rgba(21, 19, 15, 0.14);
   --accent: #D9521A;
   --accent-hover: #E4601F;
-  --accent-deep: #B8420F;
-  --dark: #1B1A18;
-  --dark-ink: #EDE8DF;
-  --dark-hairline: rgba(237, 232, 223, 0.14);
+  --accent-deep: #A83E12;
+  --dark: #15130F;
+  --dark-ink: #F3EADB;
+  --dark-hairline: rgba(243, 234, 219, 0.14);
 
   --ease: cubic-bezier(.23,1,.32,1);
   --ease-move: cubic-bezier(.77,0,.175,1);
@@ -35,6 +42,11 @@
   --color-ink: var(--ink);
   --color-stone: var(--stone);
   --color-stone-deep: var(--stone-deep);
+  --color-sand: var(--sand);
+  --color-sand-deep: var(--sand-deep);
+  --color-sky: var(--sky);
+  --color-sky-deep: var(--sky-deep);
+  --color-slate: var(--slate);
   --color-hairline: var(--hairline);
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
@@ -141,3 +153,10 @@
 .reveal-clip { clip-path: inset(0 0 100% 0); transition: clip-path var(--dur-reveal) var(--ease); }
 .reveal-clip.is-in { clip-path: inset(0 0 0 0); }
 @media (prefers-reduced-motion: reduce) { .reveal-clip { clip-path: inset(0 0 0 0); } }
+
+/* Slanted section edge (3vw rise, left to right). */
+.edge-slant { clip-path: polygon(0 0, 100% 3vw, 100% 100%, 0 100%); }
+.edge-slant-r { clip-path: polygon(0 3vw, 100% 0, 100% 100%, 0 100%); }
+/* Clipped line wrapper for kinetic headlines. */
+.line-clip { display: block; overflow: hidden; }
+.line-clip > span { display: block; will-change: transform; }

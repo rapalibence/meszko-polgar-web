@@ -1,7 +1,7 @@
-import { motion } from 'framer-motion';
 import { products } from '../content/products';
 import { site } from '../content/site';
-import { stagger } from '../lib/motion';
+import { useRef } from 'react';
+import { useReveal } from '../lib/gsap';
 import { Photo } from './Photo';
 import { cn } from '../lib/cn';
 
@@ -14,24 +14,26 @@ const layout: Record<string, string> = {
 const mdSplit = ['md:col-span-3', 'md:col-span-2', 'md:col-span-2', 'md:col-span-3'];
 
 export function Products() {
+  const ref = useRef<HTMLElement>(null);
+  useReveal(ref);
   let mdIndex = 0;
   return (
-    <section id="termekek" className="relative z-10 bg-bg py-24 md:py-32">
+    <section id="termekek" ref={ref} className="relative z-10 bg-bg py-24 md:py-32">
       <div className="mx-auto max-w-[1400px] px-5 md:px-8">
-        <motion.h2 {...stagger(0)} className="text-5xl md:text-6xl text-ink text-balance">{site.products.h2}</motion.h2>
-        <motion.p {...stagger(1)} className="mt-5 max-w-[60ch] text-stone">{site.products.intro}</motion.p>
+        <h2 data-reveal className="text-5xl md:text-6xl text-ink text-balance">{site.products.h2}</h2>
+        <p data-reveal className="mt-5 max-w-[60ch] text-stone">{site.products.intro}</p>
 
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-12 md:grid-flow-dense">
-          {products.map((p, i) => {
+          {products.map((p) => {
             const span = p.span === 'md' ? mdSplit[mdIndex++ % mdSplit.length] : layout[p.span];
             const ratio = p.span === 'lg' ? { w: 960, h: 720 } : { w: 960, h: 720 };
             const sizes = p.span === 'lg' ? '(min-width: 768px) 55vw, 100vw' : '(min-width: 768px) 22vw, 100vw';
             return (
-              <motion.article
+              <article
                 key={p.slug}
                 data-product
                 data-span={p.span}
-                {...stagger(i)}
+                data-reveal
                 className={cn('group flex flex-col border-t border-hairline pt-4', span)}
               >
                 <Photo src={p.photo} w={ratio.w} h={ratio.h} alt={`${p.name}, ${p.range}`} sizes={sizes} className={p.span === 'lg' ? 'aspect-[6/5] md:h-full' : 'aspect-[4/3]'} />
@@ -40,12 +42,12 @@ export function Products() {
                   <span className="font-mono text-[13px] text-stone whitespace-nowrap">{p.range}</span>
                 </div>
                 <p className="mt-1 text-[15px] text-stone">{p.use}</p>
-              </motion.article>
+              </article>
             );
           })}
         </div>
 
-        <motion.p {...stagger(0)} className="mt-12 max-w-[70ch] text-[15px] text-stone">{site.products.outro}</motion.p>
+        <p data-reveal className="mt-12 max-w-[70ch] text-[15px] text-stone">{site.products.outro}</p>
       </div>
     </section>
   );

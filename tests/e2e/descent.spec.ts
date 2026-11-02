@@ -8,19 +8,23 @@ async function scrollDescent(page: import('@playwright/test').Page) {
     return { top: r.top + window.scrollY, height: r.height, vh: window.innerHeight };
   });
   const seen: string[] = [];
+  const offsets: number[] = [];
   const travel = box.height - box.vh;
   for (let i = 0; i < 5; i++) {
     await page.evaluate((y) => window.scrollTo(0, y), box.top + (travel * (i + 0.5)) / 5);
     await page.waitForTimeout(1100); // card cross-fade is 400ms out + 400ms in
     const t = await page.locator('#folyamat [data-step-card] h3').first().textContent();
     seen.push((t ?? '').trim());
-    const sticky = await page.locator('#folyamat [data-sticky]').boundingBox();
-    expect(sticky!.y).toBeGreaterThanOrEqual(-1);
-    expect(sticky!.y + sticky!.height).toBeLessThanOrEqual(box.vh + 1);
+    if (box.vh >= 768 || (await page.locator('[data-progress-line]').isVisible())) {
+      offsets.push(parseFloat((await page.locator('[data-progress-line]').getAttribute('stroke-dashoffset')) ?? '0'));
+    }
+    const pin = await page.locator('#folyamat [data-pin]').boundingBox();
+    expect(Math.abs(pin!.y)).toBeLessThanOrEqual(2);
     const card = await page.locator('#folyamat [data-step-card]').first().boundingBox();
     expect(card!.y).toBeGreaterThan(72);
     expect(card!.y + card!.height).toBeLessThan(box.vh);
   }
+  for (let i = 1; i < offsets.length; i++) expect(offsets[i]).toBeLessThan(offsets[i - 1]);
   return seen;
 }
 
@@ -41,7 +45,6 @@ test.describe('tall viewport', () => {
 test.describe('large viewport', () => {
   test.use({ viewport: { width: 2560, height: 1440 } });
   test('card fits', async ({ page }) => {
-    test.setTimeout(240_000); // software WebGL at 2560x1440 is slow in CI
     await page.goto('/');
     await scrollDescent(page);
   });

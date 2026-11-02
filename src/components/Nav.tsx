@@ -1,15 +1,15 @@
 import { List, X } from '@phosphor-icons/react';
-import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { site } from '../content/site';
-import { EASE } from '../lib/motion';
 import { cn } from '../lib/cn';
+import { useScrollStore } from '../lib/scrollStore';
 import { ButtonLink } from './ui/Button';
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState<string>('');
   const [open, setOpen] = useState(false);
+  const heroVisible = useScrollStore((s) => s.heroVisible);
 
   // Scrolled state via a sentinel, not a scroll listener.
   useEffect(() => {
@@ -54,13 +54,14 @@ export function Nav() {
         data-nav
         className={cn(
           'fixed inset-x-0 top-0 z-40 h-[72px] transition-colors duration-200',
-          scrolled ? 'bg-bg/95 border-b border-hairline' : 'bg-transparent',
+          scrolled && !heroVisible ? 'bg-bg/95 border-b border-hairline text-ink' : 'bg-transparent',
+          heroVisible ? 'text-dark-ink' : 'text-ink',
         )}
         style={{ transitionTimingFunction: 'var(--ease)' }}
       >
         <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between px-5 md:px-8">
-          <a href="#hero" className="font-display text-[22px] font-bold uppercase leading-none tracking-[0.01em] text-ink">
-            {site.brand} <span className="text-stone font-semibold normal-case">{site.brandSuffix}</span>
+          <a href="#hero" className="font-display text-[22px] font-bold uppercase leading-none tracking-[0.01em] text-current">
+            {site.brand} <span className="opacity-60 font-semibold normal-case">{site.brandSuffix}</span>
           </a>
 
           <nav aria-label="Fő navigáció" className="hidden md:flex items-center gap-8">
@@ -70,7 +71,7 @@ export function Nav() {
                 href={n.href}
                 data-active={active === n.href ? 'true' : undefined}
                 className={cn(
-                  'relative py-1 text-[15px] font-medium text-ink/85 after:absolute after:inset-x-0 after:-bottom-0.5 after:h-0.5 after:bg-accent after:origin-left after:scale-x-0 after:transition-transform after:duration-200',
+                  'relative py-1 text-[15px] font-medium text-current/85 after:absolute after:inset-x-0 after:-bottom-0.5 after:h-0.5 after:bg-accent after:origin-left after:scale-x-0 after:transition-transform after:duration-200',
                   active === n.href && 'after:scale-x-100',
                 )}
               >
@@ -88,7 +89,7 @@ export function Nav() {
               aria-label="Menü"
               aria-expanded={open}
               onClick={() => setOpen(true)}
-              className="md:hidden flex h-11 w-11 items-center justify-center text-ink"
+              className="md:hidden flex h-11 w-11 items-center justify-center text-current"
             >
               <List size={26} weight="regular" />
             </button>
@@ -96,18 +97,16 @@ export function Nav() {
         </div>
       </header>
 
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            role="dialog"
-            aria-modal="true"
-            aria-label="Menü"
-            className="fixed inset-0 z-50 bg-bg"
-            initial={{ transform: 'translateX(100%)' }}
-            animate={{ transform: 'translateX(0%)' }}
-            exit={{ transform: 'translateX(100%)' }}
-            transition={{ duration: 0.24, ease: EASE }}
-          >
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Menü"
+        aria-hidden={!open}
+        inert={!open}
+        className="fixed inset-0 z-50 bg-bg transition-transform duration-[240ms]"
+        style={{ transform: open ? 'translateX(0%)' : 'translateX(100%)', transitionTimingFunction: 'var(--ease)' }}
+      >
+        {open && (<>
             <div className="flex h-[72px] items-center justify-between px-5">
               <span className="font-display text-[22px] font-bold uppercase text-ink">{site.brand}</span>
               <button type="button" aria-label="Bezárás" onClick={() => setOpen(false)} className="flex h-11 w-11 items-center justify-center text-ink">
@@ -124,9 +123,8 @@ export function Nav() {
                 {site.cta}
               </ButtonLink>
             </nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
+        </>)}
+      </div>
     </>
   );
 }

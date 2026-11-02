@@ -12,7 +12,7 @@ export const site = {
   cta: 'Ajánlatkérés',
   hero: {
     eyebrow: 'KŐBÁNYA · SZÉKESFEHÉRVÁR',
-    h1: 'Zúzottkő, egyenesen a bányából.',
+    h1: 'Zúzottkő,\negyenesen\na bányából.',
     sub: 'Minőségi kőanyag útépítéshez, betongyártáshoz és tereprendezéshez. Saját rakodás, hitelesített mérlegelés, rövid határidő.',
     secondary: 'Termékek',
     data: ['7 terasz', '14 m mélység', 'Székesfehérvár III. és IV. bányatelek'],

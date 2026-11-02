@@ -28,6 +28,9 @@ test.describe('shell at desktop', () => {
 
 test('nav underline clears when no nav section is in view', async ({ page }) => {
   await page.goto('/');
+  // Fonts settle layout (and trigger a ScrollTrigger refresh) within the first second; wait them out.
+  await page.evaluate(() => document.fonts.ready);
+  await page.waitForTimeout(400);
   await page.evaluate(() => document.getElementById('termekek')!.scrollIntoView());
   await page.waitForTimeout(600);
   await expect(page.locator('header[data-nav] a[data-active="true"]')).toHaveCount(1);

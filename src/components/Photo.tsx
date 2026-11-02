@@ -1,5 +1,4 @@
-import { useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useReducedMotion } from '../lib/useReducedMotion';
 import { cn } from '../lib/cn';
 
@@ -17,8 +16,15 @@ type Props = {
 /** Photo with wipe reveal. Current sources are procedural placeholders. */
 export function Photo({ src, w, h, alt, className, eager, sizes = '(min-width: 768px) 40vw, 100vw' }: Props) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.2 });
+  const [inView, setInView] = useState(false);
   const reduced = useReducedMotion();
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => { if (e?.isIntersecting) { setInView(true); io.disconnect(); } }, { threshold: 0.2 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
   return (
     <div ref={ref} className={cn('relative', className)}>
       {/* The clipped child is separate from the observed wrapper: Chrome's IntersectionObserver
