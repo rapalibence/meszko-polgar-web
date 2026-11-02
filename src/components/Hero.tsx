@@ -31,11 +31,11 @@ export function Hero() {
       {/* Scrim so the headline stays legible over the pit; fades out toward the canvas. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-gradient-to-r from-bg via-bg/75 to-transparent md:via-bg/60 md:to-55%"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-bg from-35% via-bg/70 via-60% to-transparent md:bg-gradient-to-r md:from-bg md:from-20% md:via-bg/55 md:via-50% md:to-transparent md:to-80%"
       />
       <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-bg" />
-      <div className="relative mx-auto grid max-w-[1400px] grid-cols-12 gap-x-6 px-5 md:px-8 min-h-[calc(100dvh-72px)] items-center">
-        <div className="col-span-12 md:col-span-6 lg:col-span-5 py-12 md:py-0">
+      <div className="relative mx-auto grid max-w-[1400px] grid-cols-12 gap-x-6 px-5 md:px-8 min-h-[calc(100dvh-72px)] items-end md:items-center">
+        <div className="col-span-12 md:col-span-6 lg:col-span-5 pb-10 pt-[36vh] md:py-0">
           <motion.p data-eyebrow {...item(0)} className="font-mono text-[12px] tracking-[0.18em] text-stone">
             {site.hero.eyebrow}
           </motion.p>

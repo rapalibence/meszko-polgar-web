@@ -1,4 +1,3 @@
-import { lazy, Suspense, useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { MotionConfig } from 'framer-motion';
 import { Nav } from './components/Nav';
@@ -12,27 +11,12 @@ import { About } from './components/About';
 import { Contact } from './components/Contact';
 import { Legal } from './pages/Legal';
 
-const PitScene = lazy(() => import('./three/PitScene').then((m) => ({ default: m.PitScene })));
-
-function useAfterIdle(): boolean {
-  const [ready, setReady] = useState(false);
-  useEffect(() => {
-    const w = window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number };
-    if (w.requestIdleCallback) w.requestIdleCallback(() => setReady(true), { timeout: 1200 });
-    else setTimeout(() => setReady(true), 300);
-  }, []);
-  return ready;
-}
+import { FrameScrubber } from './components/FrameScrubber';
 
 function Home() {
-  const idle = useAfterIdle();
   return (
     <>
-      {idle && (
-        <Suspense fallback={null}>
-          <PitScene />
-        </Suspense>
-      )}
+      <FrameScrubber />
       <Nav />
       <main className="relative z-10">
         <Hero />

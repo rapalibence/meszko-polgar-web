@@ -3,7 +3,7 @@ import math, random
 from PIL import Image, ImageDraw, ImageFilter
 
 W, H = 960, 720
-BG = (29, 27, 24)
+BG = (196, 188, 174)  # daylight stone bed
 random.seed(7)
 
 def noise_layer(w, h, alpha=18):
@@ -23,8 +23,8 @@ def gravel(path, size_px, count, seed):
             a = 2 * math.pi * i / k + rnd.uniform(-0.25, 0.25)
             rr = r * rnd.uniform(0.7, 1.0)
             pts.append((cx + math.cos(a) * rr, cy + math.sin(a) * rr * rnd.uniform(0.75, 1.0)))
-        g = rnd.randint(78, 150)
-        warm = (g + 6, g + 2, g - 6)
+        g = rnd.randint(150, 222)
+        warm = (g + 6, g + 2, g - 8)
         shade = tuple(max(0, c - rnd.randint(18, 40)) for c in warm)
         d.polygon(pts, fill=warm, outline=shade)
         # a lit facet
@@ -33,7 +33,7 @@ def gravel(path, size_px, count, seed):
             d.polygon(fx, fill=tuple(min(255, c + 14) for c in warm))
     img = img.filter(ImageFilter.GaussianBlur(0.4))
     n = noise_layer(W, H, 22)
-    img = Image.composite(Image.new("RGB", (W, H), (70, 66, 60)), img, n)
+    img = Image.composite(Image.new("RGB", (W, H), (120, 112, 100)), img, n)
     save(img, path)
 
 def save(img, path):
@@ -48,20 +48,20 @@ def strata(path, seed):
     y = 0
     while y < H:
         h = rnd.randint(28, 110)
-        g = rnd.randint(70, 135)
-        col = (g + 8, g + 3, g - 6)
+        g = rnd.randint(140, 210)
+        col = (g + 8, g + 3, g - 8)
         pts = [(0, y)] + [(x, y + rnd.uniform(-6, 6)) for x in range(0, W + 1, 60)] + [(W, y + h), (0, y + h)]
         d.polygon(pts, fill=col)
         d.line([(0, y + h), (W, y + h)], fill=tuple(max(0, c - 30) for c in col), width=2)
         y += h
     img = img.filter(ImageFilter.GaussianBlur(0.6))
     n = noise_layer(W, H, 26)
-    img = Image.composite(Image.new("RGB", (W, H), (60, 56, 50)), img, n)
+    img = Image.composite(Image.new("RGB", (W, H), (120, 112, 100)), img, n)
     save(img, path)
 
 def contours(path, seed, w=720, h=960):
     rnd = random.Random(seed)
-    img = Image.new("RGB", (w, h), (24, 22, 20))
+    img = Image.new("RGB", (w, h), (226, 221, 211))
     d = ImageDraw.Draw(img)
     cx, cy = w * 0.55, h * 0.5
     for i in range(1, 16):
@@ -71,10 +71,10 @@ def contours(path, seed, w=720, h=960):
             t = math.radians(a)
             rr = r * (1 + 0.12 * math.sin(3 * t + i) + 0.06 * math.cos(5 * t - i * 0.7))
             pts.append((cx + math.cos(t) * rr, cy + math.sin(t) * rr * 0.85))
-        g = 150 - i * 5
-        d.line(pts + [pts[0]], fill=(g, g - 4, g - 10), width=2 if i % 5 else 3)
+        g = 96 + i * 5
+        d.line(pts + [pts[0]], fill=(217, 82, 26) if i % 5 == 0 else (g, g - 4, g - 10), width=3 if i % 5 == 0 else 2)
     n = noise_layer(w, h, 20)
-    img = Image.composite(Image.new("RGB", (w, h), (60, 56, 50)), img, n)
+    img = Image.composite(Image.new("RGB", (w, h), (120, 112, 100)), img, n)
     save(img, path)
 
 gravel("public/img/gravel-0-4.jpg", 6, 21000, 1)

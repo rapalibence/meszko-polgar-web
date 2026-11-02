@@ -39,7 +39,7 @@ export function Contact() {
               src={`https://www.google.com/maps?q=${lat},${lng}&z=13&output=embed`}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              className="mt-6 aspect-[4/3] w-full border-0 [filter:grayscale(1)_invert(.9)_contrast(1.1)]"
+              className="mt-6 aspect-[4/3] w-full border-0 [filter:grayscale(1)_contrast(1.05)]"
             />
           </motion.aside>
         </div>

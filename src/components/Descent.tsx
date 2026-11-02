@@ -7,7 +7,6 @@ import { site } from '../content/site';
 import { EASE } from '../lib/motion';
 import { useScrollStore } from '../lib/scrollStore';
 import { useReducedMotion } from '../lib/useReducedMotion';
-import { hasWebGL } from '../three/webgl';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -33,9 +32,7 @@ export function Descent() {
   const sectionRef = useRef<HTMLElement>(null);
   const set = useScrollStore((s) => s.set);
   const reducedPref = useReducedMotion();
-  // Without WebGL there is no pit to descend into: show the steps as a plain list.
-  const [webgl] = useState(() => hasWebGL());
-  const reduced = reducedPref || !webgl;
+  const reduced = reducedPref;
   const [active, setActive] = useState(0);
 
   useEffect(() => {
@@ -80,10 +77,10 @@ export function Descent() {
     <section id="folyamat" ref={sectionRef} className="relative z-10" style={{ height: `${STEPS * 100}vh` }}>
       <div data-sticky className="sticky top-0 h-[100dvh] overflow-hidden">
         {/* Scrim on the left so the card reads over the pit. */}
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-gradient-to-r from-bg/80 via-bg/30 to-transparent" />
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-gradient-to-t from-bg from-30% to-transparent to-65% md:bg-gradient-to-r md:from-bg/85 md:from-10% md:via-bg/35 md:via-45% md:to-transparent md:to-70%" />
         <div className="relative mx-auto flex h-full max-w-[1400px] flex-col px-5 md:px-8 pt-[92px] md:pt-[112px] short:pt-[76px] pb-6 short:pb-3">
           <h2 className="text-3xl md:text-5xl short:text-2xl text-ink">{site.process.h2}</h2>
-          <div className="flex flex-1 items-center">
+          <div className="flex flex-1 items-end pb-8 md:items-center md:pb-0">
             <AnimatePresence mode="wait" initial={false}>
               <motion.div
                 key={active}
