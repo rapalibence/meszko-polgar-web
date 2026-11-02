@@ -4,7 +4,7 @@ export const services = {
     icon: 'FileCheck' as const,
     title: 'Digitális szállítólevél',
     body: 'Minden fuvarhoz elektronikus szállítólevél készül, amelyet az átvevő a helyszínen igazol. Átlátható, visszakereshető dokumentáció, papír nélkül.',
-    photo: '/img/boulders.jpg',
+    photo: '/img/boulders.webp',
   },
   rows: [
     { icon: 'Truck' as const, title: 'Szállítás', body: 'Egy- és többfuvaros megrendelést is vállalunk, akár másnapi kiszállítással a szabad kapacitás függvényében.' },

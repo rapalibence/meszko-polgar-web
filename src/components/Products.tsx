@@ -24,7 +24,8 @@ export function Products() {
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-12 md:grid-flow-dense">
           {products.map((p, i) => {
             const span = p.span === 'md' ? mdSplit[mdIndex++ % mdSplit.length] : layout[p.span];
-            const ratio = p.span === 'lg' ? { w: 1200, h: 1000 } : { w: 800, h: 600 };
+            const ratio = p.span === 'lg' ? { w: 960, h: 720 } : { w: 960, h: 720 };
+            const sizes = p.span === 'lg' ? '(min-width: 768px) 55vw, 100vw' : '(min-width: 768px) 22vw, 100vw';
             return (
               <motion.article
                 key={p.slug}
@@ -33,7 +34,7 @@ export function Products() {
                 {...stagger(i)}
                 className={cn('group flex flex-col border-t border-hairline pt-4', span)}
               >
-                <Photo src={p.photo} w={ratio.w} h={ratio.h} alt={`${p.name}, ${p.range}`} className={p.span === 'lg' ? 'aspect-[6/5] md:h-full' : 'aspect-[4/3]'} />
+                <Photo src={p.photo} w={ratio.w} h={ratio.h} alt={`${p.name}, ${p.range}`} sizes={sizes} className={p.span === 'lg' ? 'aspect-[6/5] md:h-full' : 'aspect-[4/3]'} />
                 <div className="mt-4 flex items-baseline justify-between gap-4">
                   <h3 className="text-2xl font-semibold text-ink">{p.name}</h3>
                   <span className="font-mono text-[13px] text-stone whitespace-nowrap">{p.range}</span>

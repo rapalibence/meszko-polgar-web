@@ -31,7 +31,7 @@ export const site = {
       'Tájrendezési terv szerinti művelés',
       '[CE / minőségi tanúsítvány]',
     ],
-    photo: '/img/contours.jpg',
+    photo: '/img/contours.webp',
   },
   process: {
     h2: 'A kőtől a fuvarig',

@@ -2,7 +2,7 @@
 import math, random
 from PIL import Image, ImageDraw, ImageFilter
 
-W, H = 1200, 900
+W, H = 960, 720
 BG = (29, 27, 24)
 random.seed(7)
 
@@ -34,7 +34,12 @@ def gravel(path, size_px, count, seed):
     img = img.filter(ImageFilter.GaussianBlur(0.4))
     n = noise_layer(W, H, 22)
     img = Image.composite(Image.new("RGB", (W, H), (70, 66, 60)), img, n)
-    img.save(path, quality=80, optimize=True)
+    save(img, path)
+
+def save(img, path):
+    base = path.rsplit('.', 1)[0]
+    img.save(base + '.webp', quality=70, method=6)
+    img.resize((img.width // 2, img.height // 2), Image.LANCZOS).save(base + '-sm.webp', quality=70, method=6)
 
 def strata(path, seed):
     rnd = random.Random(seed)
@@ -52,9 +57,9 @@ def strata(path, seed):
     img = img.filter(ImageFilter.GaussianBlur(0.6))
     n = noise_layer(W, H, 26)
     img = Image.composite(Image.new("RGB", (W, H), (60, 56, 50)), img, n)
-    img.save(path, quality=80, optimize=True)
+    save(img, path)
 
-def contours(path, seed, w=900, h=1200):
+def contours(path, seed, w=720, h=960):
     rnd = random.Random(seed)
     img = Image.new("RGB", (w, h), (24, 22, 20))
     d = ImageDraw.Draw(img)
@@ -70,14 +75,14 @@ def contours(path, seed, w=900, h=1200):
         d.line(pts + [pts[0]], fill=(g, g - 4, g - 10), width=2 if i % 5 else 3)
     n = noise_layer(w, h, 20)
     img = Image.composite(Image.new("RGB", (w, h), (60, 56, 50)), img, n)
-    img.save(path, quality=80, optimize=True)
+    save(img, path)
 
-gravel("public/img/gravel-0-4.jpg", 7, 32000, 1)
-gravel("public/img/gravel-4-8.jpg", 12, 13000, 2)
-gravel("public/img/gravel-8-16.jpg", 20, 5200, 3)
-gravel("public/img/gravel-16-32.jpg", 34, 2000, 4)
-gravel("public/img/gravel-0-32.jpg", 22, 4200, 5)
-gravel("public/img/boulders.jpg", 110, 260, 6)
+gravel("public/img/gravel-0-4.jpg", 6, 21000, 1)
+gravel("public/img/gravel-4-8.jpg", 10, 8500, 2)
+gravel("public/img/gravel-8-16.jpg", 16, 3400, 3)
+gravel("public/img/gravel-16-32.jpg", 28, 1300, 4)
+gravel("public/img/gravel-0-32.jpg", 18, 2700, 5)
+gravel("public/img/boulders.jpg", 90, 170, 6)
 strata("public/img/strata.jpg", 8)
 contours("public/img/contours.jpg", 9)
 print("ok")

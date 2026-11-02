@@ -15,7 +15,7 @@ export function Services() {
 
         <div className="mt-12 grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-8">
           <motion.article {...stagger(1)} className="md:col-span-7 group">
-            <Photo src={services.featured.photo} w={1200} h={675} alt="Billencs rakodása a telephelyen" className="aspect-video" />
+            <Photo src={services.featured.photo} w={960} h={720} alt="Billencs rakodása a telephelyen" sizes="(min-width: 768px) 55vw, 100vw" className="aspect-video" />
             <div className="relative -mt-8 mr-0 md:mr-12 bg-bg-raised border border-hairline p-6 md:p-8">
               <Featured size={32} weight="regular" className="text-accent" aria-hidden="true" />
               <h3 className="mt-4 text-3xl font-semibold text-ink">{services.featured.title}</h3>

@@ -3,11 +3,13 @@ import { useEffect, useRef } from 'react';
 import { site } from '../content/site';
 import { EASE } from '../lib/motion';
 import { useScrollStore } from '../lib/scrollStore';
+import { useReducedMotion } from '../lib/useReducedMotion';
 import { ButtonLink } from './ui/Button';
 
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
   const set = useScrollStore((s) => s.set);
+  const reduced = useReducedMotion();
 
   useEffect(() => {
     const el = ref.current;
@@ -18,7 +20,7 @@ export function Hero() {
   }, [set]);
 
   const item = (i: number) => ({
-    initial: { opacity: 0, y: 16 },
+    initial: reduced ? false : { opacity: 0, y: 16 },
     animate: { opacity: 1, y: 0 },
     transition: { duration: 0.6, ease: EASE, delay: 0.1 + i * 0.08 },
   });

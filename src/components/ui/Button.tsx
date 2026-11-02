@@ -9,7 +9,7 @@ const base =
   'disabled:opacity-50 disabled:pointer-events-none';
 
 const variants: Record<Variant, string> = {
-  primary: 'bg-accent text-ink hover:bg-accent-hover',
+  primary: 'bg-accent text-bg hover:bg-accent-hover',
   outline: 'border border-ink/70 text-ink hover:border-ink',
 };
 

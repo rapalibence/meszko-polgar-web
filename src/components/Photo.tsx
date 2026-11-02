@@ -10,10 +10,12 @@ type Props = {
   alt: string;
   className?: string;
   eager?: boolean;
+  /** Responsive sizes hint, e.g. '(min-width: 768px) 50vw, 100vw'. */
+  sizes?: string;
 };
 
 /** Photo with wipe reveal. Current sources are procedural placeholders. */
-export function Photo({ src, w, h, alt, className, eager }: Props) {
+export function Photo({ src, w, h, alt, className, eager, sizes = '(min-width: 768px) 40vw, 100vw' }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.2 });
   const reduced = useReducedMotion();
@@ -24,6 +26,8 @@ export function Photo({ src, w, h, alt, className, eager }: Props) {
       <div className={cn('absolute inset-0 overflow-hidden reveal-clip', (inView || reduced) && 'is-in')}>
       <img
         src={src}
+        srcSet={`${src.replace('.webp', '-sm.webp')} ${Math.round(w / 2)}w, ${src} ${w}w`}
+        sizes={sizes}
         width={w}
         height={h}
         alt={alt}

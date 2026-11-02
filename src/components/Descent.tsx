@@ -7,6 +7,7 @@ import { site } from '../content/site';
 import { EASE } from '../lib/motion';
 import { useScrollStore } from '../lib/scrollStore';
 import { useReducedMotion } from '../lib/useReducedMotion';
+import { hasWebGL } from '../three/webgl';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -31,7 +32,10 @@ function StepCard({ index }: { index: number }) {
 export function Descent() {
   const sectionRef = useRef<HTMLElement>(null);
   const set = useScrollStore((s) => s.set);
-  const reduced = useReducedMotion();
+  const reducedPref = useReducedMotion();
+  // Without WebGL there is no pit to descend into: show the steps as a plain list.
+  const [webgl] = useState(() => hasWebGL());
+  const reduced = reducedPref || !webgl;
   const [active, setActive] = useState(0);
 
   useEffect(() => {

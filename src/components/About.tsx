@@ -32,7 +32,7 @@ export function About() {
             </motion.ul>
           </div>
           <motion.div {...stagger(1)} className="md:col-span-5 md:col-start-8 relative">
-            <Photo src={site.about.photo} w={900} h={1200} alt="A bánya teraszainak szintvonalai felülnézetből" className="aspect-[3/4] [filter:grayscale(1)_contrast(1.15)]" />
+            <Photo src={site.about.photo} w={720} h={960} sizes="(min-width: 768px) 40vw, 100vw" alt="A bánya teraszainak szintvonalai felülnézetből" className="aspect-[3/4] [filter:grayscale(1)_contrast(1.15)]" />
             {[30, 55, 80].map((p) => (
               <div key={p} aria-hidden="true" className="pointer-events-none absolute inset-x-0 h-px bg-accent/80" style={{ top: `${p}%` }} />
             ))}

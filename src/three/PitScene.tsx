@@ -1,8 +1,7 @@
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useEffect, useMemo, useState } from 'react';
 import * as THREE from 'three';
-import { buildPit } from './terrain';
-import { buildContours } from './contours';
+import type { PitWorkerResponse } from './pit.worker';
 import { createContourMaterial } from './ContourMaterial';
 import { createTerrainMaterial } from './TerrainMaterial';
 import { CameraRig } from './CameraRig';
@@ -11,31 +10,40 @@ import { hasWebGL } from './webgl';
 import { useScrollStore } from '../lib/scrollStore';
 import { useReducedMotion } from '../lib/useReducedMotion';
 
-export const PIT_OPTIONS = { tiers: 7, radius: 10, depth: 14, segments: 128, seed: 7 };
+export const PIT_OPTIONS = { tiers: 7, radius: 10, depth: 14, segments: 112, seed: 7 };
 const CONTOUR_INTERVAL = 1;
 const SWEEP_PERIOD = 8;
 
-function Pit({ reducedMotion }: { reducedMotion: boolean }) {
-  const pit = useMemo(() => buildPit(PIT_OPTIONS), []);
-  const contours = useMemo(() => buildContours(pit, PIT_OPTIONS, CONTOUR_INTERVAL), [pit]);
+/** Geometry is generated off the main thread; null until the worker answers. */
+function usePitGeometry() {
+  const [data, setData] = useState<PitWorkerResponse | null>(null);
+  useEffect(() => {
+    const worker = new Worker(new URL('./pit.worker.ts', import.meta.url), { type: 'module' });
+    worker.onmessage = (e: MessageEvent<PitWorkerResponse>) => setData(e.data);
+    worker.postMessage({ opts: PIT_OPTIONS, interval: CONTOUR_INTERVAL });
+    return () => worker.terminate();
+  }, []);
+  return data;
+}
 
+function Pit({ reducedMotion, data }: { reducedMotion: boolean; data: PitWorkerResponse }) {
   const terrainGeom = useMemo(() => {
     const g = new THREE.BufferGeometry();
-    g.setAttribute('position', new THREE.BufferAttribute(pit.positions, 3));
-    g.setAttribute('normal', new THREE.BufferAttribute(pit.normals, 3));
+    g.setAttribute('position', new THREE.BufferAttribute(data.positions, 3));
+    g.setAttribute('normal', new THREE.BufferAttribute(data.normals, 3));
     return g;
-  }, [pit]);
+  }, [data]);
 
   const contourGeom = useMemo(() => {
     const g = new THREE.BufferGeometry();
-    g.setAttribute('position', new THREE.BufferAttribute(contours.positions, 3));
-    g.setAttribute('aLevel', new THREE.BufferAttribute(contours.levels, 1));
+    g.setAttribute('position', new THREE.BufferAttribute(data.contourPositions, 3));
+    g.setAttribute('aLevel', new THREE.BufferAttribute(data.contourLevels, 1));
     return g;
-  }, [contours]);
+  }, [data]);
 
   const material = useMemo(() => createContourMaterial(), []);
   const terrain = useMemo(() => createTerrainMaterial(), []);
-  const tierStep = PIT_OPTIONS.depth / PIT_OPTIONS.tiers;
+  const tierStep = data.tierStep;
 
   useFrame((state) => {
     const descent = useScrollStore.getState().descent;
@@ -58,7 +66,7 @@ function Pit({ reducedMotion }: { reducedMotion: boolean }) {
       t.uGlow.value += (0 - t.uGlow.value) * 0.08;
       if (!reducedMotion) {
         const phase = (state.clock.elapsedTime % SWEEP_PERIOD) / SWEEP_PERIOD;
-        u.uSweep.value = -pit.extent - 2 + phase * (pit.extent * 2 + 4);
+        u.uSweep.value = -data.extent - 2 + phase * (data.extent * 2 + 4);
       }
     }
   });
@@ -89,6 +97,7 @@ export function PitScene() {
   const visible = heroVisible || descentVisible;
   const [webgl, setWebgl] = useState(true);
   const [narrow, setNarrow] = useState(false);
+  const data = usePitGeometry();
 
   useEffect(() => {
     setWebgl(hasWebGL());
@@ -105,7 +114,7 @@ export function PitScene() {
       aria-hidden="true"
       data-pit-scene
       className="fixed inset-0 z-0 pointer-events-none transition-opacity duration-[400ms]"
-      style={{ opacity: visible ? 1 : 0, transitionTimingFunction: 'var(--ease)' }}
+      style={{ opacity: visible && data ? 1 : 0, transitionTimingFunction: 'var(--ease)' }}
     >
       {webgl ? (
         <Canvas
@@ -116,12 +125,12 @@ export function PitScene() {
         >
           <fog attach="fog" args={['#141311', 24, 60]} />
           <Lights />
-          <Pit reducedMotion={reducedMotion} />
+          {data && <Pit reducedMotion={reducedMotion} data={data} />}
           {!narrow && !reducedMotion && <Dust extent={pitExtent} depth={PIT_OPTIONS.depth} />}
           <CameraRig depth={PIT_OPTIONS.depth} reducedMotion={reducedMotion} />
         </Canvas>
       ) : (
-        <img src="/pit-fallback.jpg" alt="" className="h-full w-full object-cover opacity-80" />
+        <img src="/pit-fallback.webp" alt="" className="h-full w-full object-cover opacity-80" />
       )}
     </div>
   );
