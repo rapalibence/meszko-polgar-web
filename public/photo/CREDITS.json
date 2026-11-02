@@ -79,5 +79,10 @@
    1400,
    933
   ]
+ },
+ {
+  "file": "truck-cut",
+  "derived_from": "truck-road",
+  "note": "background removed (rembg), duotone"
  }
 ]

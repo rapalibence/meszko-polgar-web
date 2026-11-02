@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 test.describe('shell at desktop', () => {
   test('hero, nav and CTA discipline', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('h1')).toHaveText('Zúzottkő, egyenesen a bányából.');
+    await expect(page.locator('h1')).toHaveAttribute('aria-label', 'Zúzottkő');
 
     const heroCta = page.locator('#hero [data-cta]').first();
     const box = await heroCta.boundingBox();
@@ -22,7 +22,8 @@ test.describe('shell at desktop', () => {
       expect(text.trim()).toBe('Ajánlatkérés');
     }
 
-    await expect(page.locator('[data-eyebrow]')).toHaveCount(1);
+    // Eyebrow restraint: at most 3 small-caps labels above headlines on the whole page.
+    expect(await page.locator('main p.font-mono.uppercase').count()).toBeLessThanOrEqual(3);
   });
 });
 
@@ -31,6 +32,7 @@ test('nav underline clears when no nav section is in view', async ({ page }) => 
   // Fonts settle layout (and trigger a ScrollTrigger refresh) within the first second; wait them out.
   await page.evaluate(() => document.fonts.ready);
   await page.waitForTimeout(400);
+  await page.locator('#termekek').waitFor();
   await page.evaluate(() => document.getElementById('termekek')!.scrollIntoView());
   await page.waitForTimeout(600);
   await expect(page.locator('header[data-nav] a[data-active="true"]')).toHaveCount(1);

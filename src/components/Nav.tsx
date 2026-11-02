@@ -24,8 +24,6 @@ export function Nav() {
   // when none does (hero, descent, footer) no link is underlined.
   useEffect(() => {
     const ids = site.nav.map((n) => n.href.slice(1));
-    const els = ids.map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
-    if (!els.length) return;
     const inView = new Set<string>();
     const io = new IntersectionObserver(
       (entries) => {
@@ -38,8 +36,20 @@ export function Nav() {
       },
       { rootMargin: '-40% 0px -50% 0px', threshold: 0 },
     );
-    els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
+    // Sections below the fold mount lazily: observe each one as soon as it exists.
+    const seen = new Set<string>();
+    const attach = () => {
+      for (const id of ids) {
+        if (seen.has(id)) continue;
+        const el = document.getElementById(id);
+        if (el) { seen.add(id); io.observe(el); }
+      }
+      if (seen.size === ids.length) mo.disconnect();
+    };
+    const mo = new MutationObserver(attach);
+    mo.observe(document.body, { childList: true, subtree: true });
+    attach();
+    return () => { io.disconnect(); mo.disconnect(); };
   }, []);
 
   useEffect(() => {
@@ -61,7 +71,7 @@ export function Nav() {
       >
         <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between px-5 md:px-8">
           <a href="#hero" className="font-display text-[22px] font-bold uppercase leading-none tracking-[0.01em] text-current">
-            {site.brand} <span className="opacity-60 font-semibold normal-case">{site.brandSuffix}</span>
+            {site.brand} <span className="opacity-85 font-semibold normal-case">{site.brandSuffix}</span>
           </a>
 
           <nav aria-label="Fő navigáció" className="hidden md:flex items-center gap-8">

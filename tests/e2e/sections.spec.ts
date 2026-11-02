@@ -4,8 +4,8 @@ test('services, about figures and the quote form', async ({ page }) => {
   await page.goto('/');
 
   await expect(page.locator('#szolgaltatasok')).toContainText('Digitális szállítólevél');
-  expect(await page.locator('#folyamat').evaluate((el) => getComputedStyle(el).backgroundColor)).toBe('rgb(42, 42, 30)');
-  expect(await page.locator('#termekek').evaluate((el) => getComputedStyle(el).backgroundColor)).toBe('rgb(220, 212, 192)');
+  expect(await page.locator('#folyamat').evaluate((el) => getComputedStyle(el).backgroundColor)).toBe('rgb(74, 55, 48)');
+  expect(await page.locator('#termekek').evaluate((el) => getComputedStyle(el).backgroundColor)).toBe('rgb(232, 218, 186)');
   await expect(page.locator('footer')).toContainText('Unsplash');
 
   const figure = page.locator('[data-figure]').first();

@@ -4,6 +4,7 @@ import { products } from '../content/products';
 import { site } from '../content/site';
 import { useReveal } from '../lib/gsap';
 import { cn } from '../lib/cn';
+import { Headline } from './Headline';
 import { Photo } from './Photo';
 
 /** Three organic cut-out shapes (objectBoundingBox) so the photos read as specimens on the panel. */
@@ -35,13 +36,8 @@ export function Fractions() {
         </defs>
       </svg>
       <div className="mx-auto max-w-[1400px] px-5 md:px-8">
-        <div className="grid gap-6 md:grid-cols-12 md:items-end">
-          <div className="md:col-span-7">
-            <p data-reveal className="font-mono text-[12px] uppercase tracking-[0.18em] text-khaki">Termékek</p>
-            <h2 data-reveal className="mt-4 text-5xl md:text-7xl text-ink leading-[0.92]">{site.products.h2}</h2>
-          </div>
-          <p data-reveal className="max-w-[48ch] text-[17px] text-stone-deep md:col-span-5 md:justify-self-end">{site.products.intro}</p>
-        </div>
+        <Headline text={site.products.h2} mark={site.products.h2Mark} className="text-5xl md:text-7xl text-olive" />
+        <p data-reveal className="mt-6 max-w-[52ch] text-[17px] text-stone-deep">{site.products.intro}</p>
 
         <div className="mt-14 grid grid-cols-1 gap-x-6 gap-y-12 md:grid-cols-12 md:gap-y-16">
           {products.map((p, i) => {
@@ -60,7 +56,7 @@ export function Fractions() {
                       imgClassName="transition-transform duration-700 [transition-timing-function:var(--ease)] group-hover:[@media(hover:hover)_and_(pointer:fine)]:scale-[1.04]"
                     />
                   </div>
-                  <span className="absolute left-0 top-0 bg-ink px-3 py-1.5 font-mono text-[12px] tracking-[0.12em] text-dark-ink tabular-nums">{p.range.replace('-', '/')}</span>
+                  <span className="absolute left-0 top-0 bg-olive px-3 py-1.5 font-mono text-[12px] tracking-[0.12em] text-dark-ink tabular-nums">{p.range.replace('-', '/')}</span>
                 </div>
                 <div className="row-dashed mt-6 flex items-start justify-between gap-4 pb-5">
                   <div>

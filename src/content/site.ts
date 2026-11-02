@@ -11,6 +11,7 @@ export const site = {
   ],
   cta: 'Ajánlatkérés',
   hero: {
+    word: 'Zúzottkő',
     eyebrow: 'KŐBÁNYA · SZÉKESFEHÉRVÁR',
     h1: 'Zúzottkő,\negyenesen\na bányából.',
     sub: 'Minőségi kőanyag útépítéshez, betongyártáshoz és tereprendezéshez. Saját rakodás, hitelesített mérlegelés, rövid határidő.',
@@ -25,6 +26,7 @@ export const site = {
   ],
   about: {
     h2: 'Székesfehérvári bánya, helyi csapat, több mint egy évtized.',
+    h2Mark: 'helyi csapat',
     body: 'A Mészkő Polgár Kft. 2011 óta foglalkozik kőbányászattal és kőanyag-értékesítéssel. Telephelyünk Székesfehérvár keleti határában, a Budai út felől közelíthető meg, percekre az M7-es autópályától. Célunk egyszerű: megbízható minőség, pontos mennyiség, tartható határidő.',
     facts: [
       'Hitelesített hídmérleg',
@@ -41,11 +43,13 @@ export const site = {
   },
   ctaBand: {
     h3: 'Kell kő a jövő hétre?',
+    h3Mark: 'jövő hétre',
     sub: 'Küldje el a frakciót, a mennyiséget és a címet. Egy munkanapon belül árat adunk.',
   },
   footer_credit: 'Fotók: Unsplash (ideiglenes, a saját fotókig).',
   products: {
     h2: 'Frakciók és felhasználás',
+    h2Mark: 'Frakciók',
     intro: 'Az alábbi frakciók érhetők el a telephelyen. Egyedi igénnyel keressen minket.',
     outro:
       'Kiszerelés: ömlesztve, tehergépkocsira rakva a telephelyen, vagy házhoz szállítva. Mennyiségi kedvezmény 100 tonna felett.',

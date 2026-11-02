@@ -1,8 +1,9 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SplitText } from 'gsap/SplitText';
 import { useLayoutEffect, type RefObject } from 'react';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
 export { gsap, ScrollTrigger };
 export const EASE_OUT = 'power3.out';
@@ -34,14 +35,30 @@ export function useReveal(root: RefObject<HTMLElement | null>, selector = '[data
     const mm = gsap.matchMedia();
     mm.add(MOTION_OK, () => {
       const targets = gsap.utils.toArray<HTMLElement>(el.querySelectorAll(selector));
-      if (!targets.length) return;
-      gsap.set(targets, { y: 28, opacity: 0 });
-      ScrollTrigger.batch(targets, {
-        start: 'top 88%',
-        once: true,
-        onEnter: (batch) =>
-          gsap.to(batch, { y: 0, opacity: 1, duration: 0.7, ease: EASE_OUT, stagger: 0.06, overwrite: true }),
-      });
+      if (targets.length) {
+        gsap.set(targets, { y: 28, opacity: 0 });
+        ScrollTrigger.batch(targets, {
+          start: 'top 88%',
+          once: true,
+          onEnter: (batch) =>
+            gsap.to(batch, { y: 0, opacity: 1, duration: 0.7, ease: EASE_OUT, stagger: 0.06, overwrite: true }),
+        });
+      }
+      // Display headlines marked [data-split]: words rise through a mask, once, when they scroll in.
+      const splits: SplitText[] = [];
+      const run = () => {
+        gsap.utils.toArray<HTMLElement>(el.querySelectorAll('[data-split]')).forEach((h) => {
+          const sp = new SplitText(h, { type: 'words', mask: 'words' });
+          splits.push(sp);
+          gsap.set(sp.words, { yPercent: 105 });
+          gsap.to(sp.words, {
+            yPercent: 0, duration: 0.8, ease: EASE_OUT, stagger: 0.05,
+            scrollTrigger: { trigger: h, start: 'top 88%', once: true },
+          });
+        });
+      };
+      if (document.fonts?.status === 'loaded') run(); else document.fonts?.ready.then(run);
+      return () => splits.forEach((s) => s.revert());
     });
     return () => mm.revert();
   }, [root, selector]);

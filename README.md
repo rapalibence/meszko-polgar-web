@@ -27,3 +27,9 @@ All copy lives in `src/content/*.ts`. Bracketed strings (`[…]`) are placeholde
 ## Deploy
 
 Vercel, framework Vite, output `dist/`. SPA rewrite and `/api/*` in `vercel.json`.
+
+## Credits
+
+- Smooth scrolling: [Lenis](https://github.com/darkroomengineering/lenis) (MIT).
+- `Magnet` and `SplitText` wrappers in `src/vendor/react-bits/` are from [React Bits](https://github.com/DavidHDev/react-bits) (MIT + Commons Clause), used as part of this site.
+- Placeholder photography: Unsplash, see `public/photo/CREDITS.json`. Replace with the client's own photos.

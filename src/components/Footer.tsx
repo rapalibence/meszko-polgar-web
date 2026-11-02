@@ -18,7 +18,7 @@ export function Footer() {
             ))}
           </nav>
         </div>
-        <div className="mt-10 flex flex-col gap-2 text-[13px] text-dark-ink/50 md:flex-row md:justify-between">
+        <div className="mt-10 flex flex-col gap-2 text-[13px] text-dark-ink/75 md:flex-row md:justify-between">
           <p>{site.footer.copyright}</p>
           <p>{site.footer_credit}</p>
         </div>

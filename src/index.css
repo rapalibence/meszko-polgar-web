@@ -1,32 +1,38 @@
 @import '@fontsource/barlow/400.css';
 @import '@fontsource/barlow/500.css';
 @import '@fontsource/barlow-condensed/600.css';
-@import '@fontsource/barlow-condensed/700.css';
 @import '@fontsource/jetbrains-mono/400.css';
 @import 'tailwindcss';
+
+/* Display weight self-hosted from /public so index.html can preload it (hero LCP). */
+@font-face { font-family: 'Barlow Condensed'; font-style: normal; font-weight: 700; font-display: swap; src: url('/fonts/barlow-condensed-latin-ext-700-normal.woff2') format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Barlow Condensed'; font-style: normal; font-weight: 700; font-display: swap; src: url('/fonts/barlow-condensed-latin-700-normal.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 
 /* ------------------------------------------------------------------
    Design tokens. The ONLY values allowed in components.
    Spec: docs/superpowers/specs/2026-11-02-meszko-polgar-website-design.md §3
 ------------------------------------------------------------------- */
 :root {
-  --bg: #F4F1EA;
-  --bg-raised: #FBF9F4;
-  --panel: #DCD4C0;
-  --panel-deep: #C9BFA6;
+  --bg: #F3E7CC;
+  --bg-raised: #F8EFDC;
+  --panel: #E8DABA;
+  --panel-deep: #D9C79F;
+  --choco: #4A3730;
+  --choco-deep: #34251F;
+  --olive: #3F5A48;
+  --olive-deep: #2E4335;
   --khaki: #6B6A4F;
-  --olive: #2A2A1E;
-  --ink: #0E0D09;
-  --stone: #6E685F;
-  --stone-deep: #57514A;
-  --hairline: rgba(14, 13, 9, 0.14);
+  --ink: #1E1611;
+  --stone: #6B5F55;
+  --stone-deep: #54483F;
+  --hairline: rgba(30, 22, 17, 0.16);
   --accent: #D9521A;
   --accent-hover: #E4601F;
   --accent-deep: #A83E12;
   --accent-light: #F0742F;
-  --dark: #0E0D09;
-  --dark-ink: #F4F1EA;
-  --dark-hairline: rgba(244, 241, 234, 0.16);
+  --dark: #1E1611;
+  --dark-ink: #F3E7CC;
+  --dark-hairline: rgba(243, 231, 204, 0.18);
 
   --ease: cubic-bezier(.23,1,.32,1);
   --ease-move: cubic-bezier(.77,0,.175,1);
@@ -44,6 +50,9 @@
   --color-panel-deep: var(--panel-deep);
   --color-khaki: var(--khaki);
   --color-olive: var(--olive);
+  --color-olive-deep: var(--olive-deep);
+  --color-choco: var(--choco);
+  --color-choco-deep: var(--choco-deep);
   --color-hairline: var(--hairline);
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
@@ -162,3 +171,15 @@
 .row-dashed { position: relative; }
 .row-dashed::after { content: ''; position: absolute; inset-inline: 0; bottom: 0; height: 1px; background-image: linear-gradient(to right, var(--hairline) 50%, transparent 50%); background-size: 10px 1px; }
 .row-dashed-dark::after { background-image: linear-gradient(to right, var(--dark-hairline) 50%, transparent 50%); }
+
+/* Duotone photo treatment (static filter, never animated). */
+.duotone img { filter: grayscale(1) sepia(.42) contrast(1.06) brightness(.98); }
+.duotone::after { content: ''; position: absolute; inset: 0; background: var(--choco); mix-blend-mode: multiply; opacity: .28; pointer-events: none; }
+/* Highlighted word inside display headlines. */
+mark.hl { background: var(--accent); color: var(--dark-ink); padding: 0 .08em; margin: 0 -.02em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.on-dark mark.hl { background: var(--olive); color: var(--dark-ink); }
+/* Lenis */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
