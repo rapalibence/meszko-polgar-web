@@ -10,8 +10,8 @@ export function Nav() {
   const [active, setActive] = useState<string>('');
   const [open, setOpen] = useState(false);
   const heroVisible = useScrollStore((s) => s.heroVisible);
+  const onDark = heroVisible && !open;
 
-  // Scrolled state via a sentinel, not a scroll listener.
   useEffect(() => {
     const sentinel = document.getElementById('nav-sentinel');
     if (!sentinel) return;
@@ -20,8 +20,6 @@ export function Nav() {
     return () => io.disconnect();
   }, []);
 
-  // Active section: track the set of nav sections crossing the viewport's middle band;
-  // when none does (hero, descent, footer) no link is underlined.
   useEffect(() => {
     const ids = site.nav.map((n) => n.href.slice(1));
     const inView = new Set<string>();
@@ -36,7 +34,6 @@ export function Nav() {
       },
       { rootMargin: '-40% 0px -50% 0px', threshold: 0 },
     );
-    // Sections below the fold mount lazily: observe each one as soon as it exists.
     const seen = new Set<string>();
     const attach = () => {
       for (const id of ids) {
@@ -54,7 +51,9 @@ export function Nav() {
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false); };
+    window.addEventListener('keydown', onKey);
+    return () => { document.body.style.overflow = ''; window.removeEventListener('keydown', onKey); };
   }, [open]);
 
   return (
@@ -65,23 +64,23 @@ export function Nav() {
         className={cn(
           'fixed inset-x-0 top-0 z-40 h-[72px] transition-colors duration-200',
           scrolled && !heroVisible ? 'bg-bg/95 border-b border-hairline text-ink' : 'bg-transparent',
-          heroVisible ? 'text-dark-ink' : 'text-ink',
+          onDark ? 'text-dark-ink' : 'text-ink',
         )}
         style={{ transitionTimingFunction: 'var(--ease)' }}
       >
         <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between px-5 md:px-8">
-          <a href="#hero" className="font-display text-[22px] font-bold uppercase leading-none tracking-[0.01em] text-current">
-            {site.brand} <span className="opacity-85 font-semibold normal-case">{site.brandSuffix}</span>
+          <a href="#hero" className="text-[18px] font-semibold leading-none tracking-[-0.01em] text-current">
+            {site.brand} <span className="opacity-70 font-normal">{site.brandSuffix}</span>
           </a>
 
-          <nav aria-label="Fő navigáció" className="hidden md:flex items-center gap-8">
+          <nav aria-label="Fő navigáció" className="hidden md:flex items-center gap-7">
             {site.nav.map((n) => (
               <a
                 key={n.href}
                 href={n.href}
                 data-active={active === n.href ? 'true' : undefined}
                 className={cn(
-                  'relative py-1 text-[15px] font-medium text-current/85 after:absolute after:inset-x-0 after:-bottom-0.5 after:h-0.5 after:bg-accent after:origin-left after:scale-x-0 after:transition-transform after:duration-200',
+                  'relative py-1 text-[15px] text-current/85 after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:bg-current after:origin-left after:scale-x-0 after:transition-transform after:duration-200',
                   active === n.href && 'after:scale-x-100',
                 )}
               >
@@ -91,49 +90,62 @@ export function Nav() {
           </nav>
 
           <div className="flex items-center gap-3">
-            <ButtonLink href="#kapcsolat" data-cta className="hidden md:inline-flex">
+            <ButtonLink href="#kapcsolat" data-cta variant={onDark ? 'ghost' : 'primary'} className="hidden md:inline-flex h-10 px-5">
               {site.cta}
             </ButtonLink>
             <button
               type="button"
-              aria-label="Menü"
+              aria-label={site.menu.open}
               aria-expanded={open}
               onClick={() => setOpen(true)}
-              className="md:hidden flex h-11 w-11 items-center justify-center text-current"
+              className="flex h-10 items-center gap-2 border border-current/40 px-3 text-[14px] text-current"
             >
-              <List size={26} weight="regular" />
+              <span className="hidden sm:inline">{site.menu.open}</span>
+              <List size={20} weight="regular" aria-hidden="true" />
             </button>
           </div>
         </div>
       </header>
 
+      {/* Full-screen menu, Cominvi-style */}
       <div
         role="dialog"
         aria-modal="true"
-        aria-label="Menü"
+        aria-label={site.menu.open}
         aria-hidden={!open}
         inert={!open}
-        className="fixed inset-0 z-50 bg-bg transition-transform duration-[240ms]"
-        style={{ transform: open ? 'translateX(0%)' : 'translateX(100%)', transitionTimingFunction: 'var(--ease)' }}
+        data-menu
+        className="fixed inset-0 z-50 bg-dark text-dark-ink transition-opacity duration-[240ms]"
+        style={{ opacity: open ? 1 : 0, pointerEvents: open ? 'auto' : 'none', transitionTimingFunction: 'var(--ease)' }}
       >
-        {open && (<>
-            <div className="flex h-[72px] items-center justify-between px-5">
-              <span className="font-display text-[22px] font-bold uppercase text-ink">{site.brand}</span>
-              <button type="button" aria-label="Bezárás" onClick={() => setOpen(false)} className="flex h-11 w-11 items-center justify-center text-ink">
-                <X size={26} />
-              </button>
-            </div>
-            <nav aria-label="Mobil navigáció" className="flex flex-col gap-2 px-5 pt-8">
-              {site.nav.map((n) => (
-                <a key={n.href} href={n.href} onClick={() => setOpen(false)} className="font-display text-4xl font-semibold uppercase text-ink py-2 border-b border-hairline">
-                  {n.label}
-                </a>
+        <div className="mx-auto flex h-[72px] max-w-[1400px] items-center justify-between px-5 md:px-8">
+          <span className="text-[18px] font-semibold">{site.brand} <span className="opacity-70 font-normal">{site.brandSuffix}</span></span>
+          <button type="button" aria-label={site.menu.close} onClick={() => setOpen(false)} className="flex h-10 items-center gap-2 border border-dark-hairline px-3 text-[14px]">
+            <span className="hidden sm:inline">{site.menu.close}</span>
+            <X size={20} aria-hidden="true" />
+          </button>
+        </div>
+        <div className="mx-auto grid max-w-[1400px] gap-12 px-5 pt-10 md:grid-cols-12 md:px-8 md:pt-20">
+          <nav aria-label="Menü" className="md:col-span-7">
+            {site.nav.map((n, i) => (
+              <a key={n.href} href={n.href} onClick={() => setOpen(false)} className="group flex items-baseline gap-5 border-b border-dark-hairline py-4 md:py-6">
+                <span className="font-mono text-[12px] text-dark-ink/50 tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+                <span className="text-[32px] font-semibold md:text-[48px]">{n.label}</span>
+              </a>
+            ))}
+          </nav>
+          <div className="md:col-span-4 md:col-start-9">
+            <ul className="space-y-4 text-[15px] text-dark-ink/80">
+              {site.contact.rows.map((r) => (
+                <li key={r.label}>
+                  <span className="block font-mono text-[11px] uppercase tracking-[0.12em] text-dark-ink/50">{r.label}</span>
+                  {r.value}
+                </li>
               ))}
-              <ButtonLink href="#kapcsolat" data-cta onClick={() => setOpen(false)} className="mt-8 w-full">
-                {site.cta}
-              </ButtonLink>
-            </nav>
-        </>)}
+            </ul>
+            <ButtonLink href="#kapcsolat" data-cta onClick={() => setOpen(false)} className="mt-10 w-full md:w-auto">{site.cta}</ButtonLink>
+          </div>
+        </div>
       </div>
     </>
   );

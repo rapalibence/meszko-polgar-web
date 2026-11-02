@@ -6,14 +6,16 @@ import { Hero } from './components/Hero';
 import { Footer } from './components/Footer';
 
 // Below-the-fold sections load after the hero so the first paint carries only what it needs.
-const Fractions = lazy(() => import('./components/Fractions').then((m) => ({ default: m.Fractions })));
+const Products = lazy(() => import('./components/Products').then((m) => ({ default: m.Products })));
 const Process = lazy(() => import('./components/Process').then((m) => ({ default: m.Process })));
 const Services = lazy(() => import('./components/Services').then((m) => ({ default: m.Services })));
-const About = lazy(() => import('./components/About').then((m) => ({ default: m.About })));
-const CtaBand = lazy(() => import('./components/CtaBand').then((m) => ({ default: m.CtaBand })));
+const Faq = lazy(() => import('./components/Faq').then((m) => ({ default: m.Faq })));
 const Contact = lazy(() => import('./components/Contact').then((m) => ({ default: m.Contact })));
-import { Stats } from './components/Stats';
+import { About } from './components/About';
 import { Legal } from './pages/Legal';
+import { Simple } from './pages/Simple';
+import { StickyCta } from './components/StickyCta';
+import { site } from './content/site';
 
 
 /** The browser's hash jump fires before React has rendered the sections; redo it once they exist. */
@@ -48,19 +50,19 @@ function Home() {
       <Nav />
       <main className="relative z-10">
         <Hero />
-        <Stats />
-        <Suspense fallback={<div className="min-h-[100dvh] bg-panel" aria-hidden="true" />}>
-          <Fractions />
+        <About />
+        <Suspense fallback={<div className="min-h-[100dvh] bg-dark" aria-hidden="true" />}>
+          <Products />
           <Process />
           <Services />
-          <About />
-          <CtaBand />
+          <Faq />
           <Contact />
         </Suspense>
       </main>
       <div className="relative z-10">
         <Footer />
       </div>
+      <StickyCta />
     </>
   );
 }
@@ -68,11 +70,12 @@ function Home() {
 export default function App() {
   return (
     <BrowserRouter>
-      <div className="grain" aria-hidden="true" />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/adatkezeles" element={<Legal title="Adatkezelési tájékoztató" />} />
         <Route path="/impresszum" element={<Legal title="Impresszum" />} />
+        <Route path="/koszonjuk" element={<Simple h1={site.thanks.h1} body={site.thanks.body} back={site.thanks.back} />} />
+        <Route path="*" element={<Simple h1={site.notFound.h1} body={site.notFound.body} back={site.notFound.back} />} />
       </Routes>
     </BrowserRouter>
   );

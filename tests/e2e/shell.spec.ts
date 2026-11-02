@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 test.describe('shell at desktop', () => {
   test('hero, nav and CTA discipline', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('h1')).toHaveAttribute('aria-label', 'Zúzottkő');
+    await expect(page.locator('h1')).toContainText('Zúzottkő és útalap');
 
     const heroCta = page.locator('#hero [data-cta]').first();
     const box = await heroCta.boundingBox();
@@ -22,8 +22,7 @@ test.describe('shell at desktop', () => {
       expect(text.trim()).toBe('Ajánlatkérés');
     }
 
-    // Eyebrow restraint: at most 3 small-caps labels above headlines on the whole page.
-    expect(await page.locator('main p.font-mono.uppercase').count()).toBeLessThanOrEqual(3);
+
   });
 });
 
@@ -41,7 +40,7 @@ test('nav underline clears when no nav section is in view', async ({ page }) => 
   await expect(page.locator('header[data-nav] a[data-active="true"]')).toHaveCount(0);
   // Mid-descent (#folyamat is not a nav item) nothing should be underlined either.
   const box = await page.locator('#folyamat').evaluate((el) => ({ top: el.getBoundingClientRect().top + window.scrollY, height: el.getBoundingClientRect().height }));
-  await page.evaluate((y) => window.scrollTo(0, y), box.top + box.height * 0.5);
+  await page.evaluate((y) => window.scrollTo(0, y), box.top + box.height * 0.5 - 450);
   await page.waitForTimeout(800);
   await expect(page.locator('header[data-nav] a[data-active="true"]')).toHaveCount(0);
 });

@@ -10,7 +10,7 @@ test('keyboard reaches the hero CTA with a visible accent focus ring; headings a
       return el ? { cta: el.hasAttribute('data-cta'), inHero: !!el.closest('#hero'), outline: getComputedStyle(el).outlineColor } : null;
     });
     if (info?.cta && info.inHero) {
-      expect(info.outline).toBe('rgb(217, 82, 26)');
+      expect(info.outline).toBe('rgb(224, 86, 28)');
       reached = true;
       break;
     }

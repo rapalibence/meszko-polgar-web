@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { products } from '../content/products';
 import { site } from '../content/site';
@@ -19,6 +20,7 @@ type Status = 'idle' | 'submitting' | 'success' | 'error';
 
 export function QuoteForm() {
   const [status, setStatus] = useState<Status>('idle');
+  const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm<QuoteInput>({
     resolver: zodResolver(quoteSchema),
     defaultValues: { company: '', quantityT: '', address: '', note: '' },
@@ -28,7 +30,8 @@ export function QuoteForm() {
     setStatus('submitting');
     try {
       const res = await fetch('/api/quote', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
-      setStatus(res.ok ? 'success' : 'error');
+      if (res.ok) { setStatus('success'); navigate('/koszonjuk'); return; }
+      setStatus('error');
     } catch {
       setStatus('error');
     }

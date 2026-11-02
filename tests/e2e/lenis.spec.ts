@@ -9,7 +9,7 @@ test('wheel scrolling moves the page smoothly and anchor links land on their sec
   await page.mouse.wheel(0, 1200);
   await page.waitForTimeout(900);
   expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(600);
-  await page.locator('header[data-nav] a[href="#rolunk"]').click();
+  await page.locator('header[data-nav] nav a[href="#rolunk"]').click();
   await page.waitForTimeout(1600);
   const top = await page.locator('#rolunk').evaluate((el) => el.getBoundingClientRect().top);
   expect(Math.abs(top)).toBeLessThan(120);

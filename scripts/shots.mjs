@@ -11,12 +11,11 @@ await p.waitForTimeout(2000);
 await p.screenshot({ path: '/tmp/s-hero.png' });
 await p.evaluate(() => { document.documentElement.style.scrollBehavior = 'auto'; });
 const sections = [
-  ['section[aria-label="Számokban"]', 'stats'],
+  ['#rolunk', 'about'],
   ['#termekek', 'products'],
   ['#folyamat', 'process'],
   ['#szolgaltatasok', 'services'],
-  ['#rolunk', 'about'],
-  ['section[aria-label="Ajánlatkérés felhívás"]', 'cta'],
+  ['#gyik', 'faq'],
   ['#kapcsolat', 'contact'],
 ];
 for (const [sel, name] of sections) {
@@ -33,7 +32,7 @@ await m.goto(base);
 await m.waitForTimeout(2000);
 await m.screenshot({ path: '/tmp/m-hero.png' });
 await m.evaluate(() => { document.documentElement.style.scrollBehavior = 'auto'; });
-for (const [sel, name] of [['#termekek', 'products'], ['#folyamat', 'process'], ['#szolgaltatasok', 'services']]) {
+for (const [sel, name] of [['#rolunk', 'about'], ['#termekek', 'products'], ['#folyamat', 'process'], ['#szolgaltatasok', 'services']]) {
   await m.evaluate((s) => document.querySelector(s)?.scrollIntoView(), sel);
   await m.waitForTimeout(1200);
   await m.screenshot({ path: `/tmp/m-${name}.png` });

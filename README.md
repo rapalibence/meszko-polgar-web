@@ -30,6 +30,16 @@ Vercel, framework Vite, output `dist/`. SPA rewrite and `/api/*` in `vercel.json
 
 ## Credits
 
-- Smooth scrolling: [Lenis](https://github.com/darkroomengineering/lenis) (MIT).
-- `Magnet` and `SplitText` wrappers in `src/vendor/react-bits/` are from [React Bits](https://github.com/DavidHDev/react-bits) (MIT + Commons Clause), used as part of this site.
+- Smooth scrolling: [Lenis](https://github.com/darkroomengineering/lenis) (MIT), pointer devices only.
+- Hero and service loops: Pexels videos 8382429 and 8382433 (Pexels license), re-encoded to 720p in `public/video/`.
 - Placeholder photography: Unsplash, see `public/photo/CREDITS.json`. Replace with the client's own photos.
+
+## Before launch (client checklist)
+
+- Address, phone, e-mail, adószám, cégjegyzékszám in `src/content/site.ts` (search for `[`).
+- Real photos (quarry, machines, fractions) and the team photo for Rólunk.
+- Confirm the FAQ answers marked with `[...]` (minimum load, delivery radius, payment).
+- Legal pages: adatkezelési tájékoztató, impresszum.
+- E-mail delivery for `/api/quote` (Resend or SMTP) and the destination inbox.
+- Analytics: add the snippet only with a consent banner (GDPR); none is shipped by default.
+- Domain cut-over and `og:url` / JSON-LD `url` update in `index.html`.

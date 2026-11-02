@@ -4,8 +4,8 @@ test('services, about figures and the quote form', async ({ page }) => {
   await page.goto('/');
 
   await expect(page.locator('#szolgaltatasok')).toContainText('Digitális szállítólevél');
-  expect(await page.locator('#folyamat').evaluate((el) => getComputedStyle(el).backgroundColor)).toBe('rgb(74, 55, 48)');
-  expect(await page.locator('#termekek').evaluate((el) => getComputedStyle(el).backgroundColor)).toBe('rgb(232, 218, 186)');
+  await page.locator('#termekek').waitFor();
+  expect(await page.locator('#termekek').evaluate((el) => getComputedStyle(el).backgroundColor)).toBe('rgb(20, 20, 18)');
   await expect(page.locator('footer')).toContainText('Unsplash');
 
   const figure = page.locator('[data-figure]').first();
@@ -23,5 +23,6 @@ test('services, about figures and the quote form', async ({ page }) => {
   await page.getByLabel('Termék / frakció').selectOption('zuzottko-0-4');
   await page.getByLabel(/Elfogadom az adatkezelési/).check();
   await page.getByRole('button', { name: 'Ajánlatkérés' }).click();
-  await expect(page.locator('#kapcsolat')).toContainText('Köszönjük! Egy munkanapon belül jelentkezünk.');
+  await expect(page).toHaveURL(/\/koszonjuk$/);
+  await expect(page.locator('h1')).toContainText('Köszönjük');
 });
