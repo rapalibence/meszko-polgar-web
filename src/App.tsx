@@ -5,6 +5,7 @@ import { Hero } from './components/Hero';
 import { Footer } from './components/Footer';
 import { Marquee } from './components/Marquee';
 import { Products } from './components/Products';
+import { Descent } from './components/Descent';
 import { Services } from './components/Services';
 import { About } from './components/About';
 import { Contact } from './components/Contact';
@@ -23,6 +24,7 @@ function Home() {
         <Hero />
         <Marquee />
         <Products />
+        <Descent />
         <Services />
         <About />
         <Contact />

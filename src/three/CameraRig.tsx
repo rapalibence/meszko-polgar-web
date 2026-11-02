@@ -5,11 +5,11 @@ import { useScrollStore } from '../lib/scrollStore';
 
 export const CAMERA_PATH: THREE.Vector3[] = [
   new THREE.Vector3(17, 10, 19),
-  new THREE.Vector3(12, 5, 13),
-  new THREE.Vector3(8, 1.5, 9),
-  new THREE.Vector3(6, -2.5, 6.5),
-  new THREE.Vector3(4, -6.5, 4.5),
-  new THREE.Vector3(2.5, -10.5, 3),
+  new THREE.Vector3(12.5, 5.5, 14),
+  new THREE.Vector3(8.5, 1.5, 9.5),
+  new THREE.Vector3(6, -2, 6.5),
+  new THREE.Vector3(4, -5, 4.5),
+  new THREE.Vector3(2.5, -7.5, 3.5),
 ];
 
 type Props = { depth: number; reducedMotion: boolean };

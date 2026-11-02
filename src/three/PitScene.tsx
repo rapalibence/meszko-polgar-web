@@ -4,6 +4,7 @@ import * as THREE from 'three';
 import { buildPit } from './terrain';
 import { buildContours } from './contours';
 import { createContourMaterial } from './ContourMaterial';
+import { createTerrainMaterial } from './TerrainMaterial';
 import { CameraRig } from './CameraRig';
 import { Dust } from './Dust';
 import { hasWebGL } from './webgl';
@@ -33,20 +34,28 @@ function Pit({ reducedMotion }: { reducedMotion: boolean }) {
   }, [contours]);
 
   const material = useMemo(() => createContourMaterial(), []);
+  const terrain = useMemo(() => createTerrainMaterial(), []);
   const tierStep = PIT_OPTIONS.depth / PIT_OPTIONS.tiers;
 
   useFrame((state) => {
     const descent = useScrollStore.getState().descent;
     const u = material.uniforms;
+    const t = terrain.uniforms;
     if (descent > 0.01) {
       // Five process steps map onto benches 1..5 (bench 0 is the rim).
-      const bench = Math.min(5, Math.round(descent * 5));
-      u.uActiveMax.value = -tierStep * (bench - 1) + 0.01;
-      u.uActiveMin.value = -tierStep * bench - 0.01;
+      const bench = Math.min(5, Math.floor(descent * 5) + 1);
+      const max = -tierStep * (bench - 1) + 0.01;
+      const min = -tierStep * bench - 0.01;
+      u.uActiveMax.value = max;
+      u.uActiveMin.value = min;
+      t.uActiveMax.value = max;
+      t.uActiveMin.value = min;
+      t.uGlow.value += (1 - t.uGlow.value) * 0.08;
       u.uSweep.value = -999;
     } else {
       u.uActiveMin.value = 1;
       u.uActiveMax.value = 1;
+      t.uGlow.value += (0 - t.uGlow.value) * 0.08;
       if (!reducedMotion) {
         const phase = (state.clock.elapsedTime % SWEEP_PERIOD) / SWEEP_PERIOD;
         u.uSweep.value = -pit.extent - 2 + phase * (pit.extent * 2 + 4);
@@ -56,9 +65,7 @@ function Pit({ reducedMotion }: { reducedMotion: boolean }) {
 
   return (
     <group>
-      <mesh geometry={terrainGeom} receiveShadow>
-        <meshStandardMaterial color="#5A554C" roughness={1} metalness={0} flatShading side={THREE.DoubleSide} />
-      </mesh>
+      <mesh geometry={terrainGeom} material={terrain.material} />
       <lineSegments geometry={contourGeom} material={material} />
       
     </group>
