@@ -5,6 +5,9 @@ import { Hero } from './components/Hero';
 import { Footer } from './components/Footer';
 import { Marquee } from './components/Marquee';
 import { Products } from './components/Products';
+import { Services } from './components/Services';
+import { About } from './components/About';
+import { Contact } from './components/Contact';
 import { Legal } from './pages/Legal';
 
 const PitScene = lazy(() => import('./three/PitScene').then((m) => ({ default: m.PitScene })));
@@ -20,6 +23,9 @@ function Home() {
         <Hero />
         <Marquee />
         <Products />
+        <Services />
+        <About />
+        <Contact />
       </main>
       <div className="relative z-10">
         <Footer />
