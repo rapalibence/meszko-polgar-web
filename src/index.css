@@ -13,8 +13,9 @@
   --bg: #F3EADB;
   --bg-raised: #FBF6EC;
   --ink: #15130F;
-  --stone: #8C867A;
-  --stone-deep: #6B655A;
+  --stone: #6E685F;
+  --stone-deep: #57514A;
+  --rock: #8C867A;
   --sand: #E9D8B4;
   --sand-deep: #CDB58A;
   --rust: #D9521A;
@@ -47,6 +48,7 @@
   --color-sky: var(--sky);
   --color-sky-deep: var(--sky-deep);
   --color-slate: var(--slate);
+  --color-rock: var(--rock);
   --color-hairline: var(--hairline);
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);

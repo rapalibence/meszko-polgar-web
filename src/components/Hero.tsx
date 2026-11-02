@@ -39,10 +39,11 @@ export function Hero() {
       // Skipped when the page is reloaded mid-scroll so nothing replays over the user.
       if (window.scrollY <= 40) {
         const tl = gsap.timeline({ defaults: { ease: EASE_OUT } });
-        tl.from(layers, { y: 140, opacity: 0, duration: 1.1, stagger: 0.08 }, 0)
-          .from('[data-sun]', { scale: 0.6, transformOrigin: '50% 50%', duration: 1.2 }, 0.1)
-          .from(lines, { yPercent: 112, duration: 0.9, stagger: 0.09 }, 0.35)
-          .from(copy, { y: 18, opacity: 0, duration: 0.6, stagger: 0.08 }, 0.7);
+        tl.from(layers, { y: 140, opacity: 0, duration: 1.0, stagger: 0.07 }, 0)
+          .from('[data-sun]', { scale: 0.6, transformOrigin: '50% 50%', duration: 1.1 }, 0.05)
+          .from(lines, { yPercent: 112, duration: 0.85, stagger: 0.08 }, 0.15)
+          // Copy moves but never hides: it stays paintable for LCP.
+          .from(copy, { y: 22, duration: 0.6, stagger: 0.07 }, 0.4);
       }
 
       // Scroll: parallax by depth. Sky and far wall recede, strata/machines sink slowly,

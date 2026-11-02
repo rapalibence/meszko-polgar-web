@@ -13,7 +13,7 @@ export function Footer() {
         <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
           <div>
             <p className="font-display text-[22px] font-bold uppercase text-dark-ink">
-              {site.brand} <span className="text-stone font-semibold normal-case">{site.brandSuffix}</span>
+              {site.brand} <span className="text-dark-ink/60 font-semibold normal-case">{site.brandSuffix}</span>
             </p>
             <p className="mt-3 max-w-[60ch] text-[14px] text-dark-ink/60">{site.footer.legal}</p>
           </div>

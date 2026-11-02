@@ -13,7 +13,7 @@ function StepCard({ index, className }: { index: number; className?: string }) {
   const step = processSteps[index];
   return (
     <div data-step-card className={cn('w-full max-w-[560px] bg-bg-raised p-6 md:p-9 short:p-4 shadow-[0_24px_60px_-30px_rgba(21,19,15,.35)]', className)}>
-      <span className="font-mono text-[13px] text-accent tabular-nums">{step.depthM === 0 ? '0 m' : `-${step.depthM} m`}</span>
+      <span className="font-mono text-[13px] text-accent-deep tabular-nums">{step.depthM === 0 ? '0 m' : `-${step.depthM} m`}</span>
       <h3 className="mt-2 md:mt-3 text-4xl md:text-6xl short:text-2xl font-bold text-ink leading-[0.95]">{step.title}</h3>
       <p className="mt-4 text-[15px] md:text-[17px] short:text-[14px] short:leading-snug text-stone-deep">{step.body}</p>
       <div className="mt-5 md:mt-7 short:mt-3 flex gap-1.5" aria-hidden="true">
@@ -111,7 +111,7 @@ export function Descent() {
         <div aria-hidden="true" className="absolute inset-0">
           <div data-band className="absolute inset-x-0 top-[55%] h-[70%] bg-sand edge-slant" />
           <div data-band className="absolute inset-x-0 top-[78%] h-[60%] bg-sand-deep edge-slant-r" />
-          <div data-band className="absolute inset-x-0 top-[96%] h-[50%] bg-stone edge-slant" />
+          <div data-band className="absolute inset-x-0 top-[96%] h-[50%] bg-rock edge-slant" />
         </div>
 
         <div className="relative mx-auto flex h-full max-w-[1400px] flex-col px-5 md:px-8 pt-[92px] md:pt-[112px] short:pt-[76px] pb-6 short:pb-3">

@@ -47,7 +47,7 @@ export function PitPoster({ className, id, fit }: Props) {
       <g data-layer="2" style={{ willChange: 'transform' }}>
         <polygon fill="var(--sand)" points="-200,660 780,660 840,730 -200,730" />
         <polygon fill="var(--sand-deep)" points="-200,730 1000,730 1060,800 -200,800" />
-        <polygon fill="var(--stone)" points="-200,800 1200,800 1250,860 -200,860" />
+        <polygon fill="var(--rock)" points="-200,800 1200,800 1250,860 -200,860" />
         <rect x="-200" y="860" width="1840" height="300" fill="var(--ink)" />
         {/* bench edge highlights */}
         <g stroke="var(--bg)" strokeOpacity=".45" strokeWidth="3">
@@ -60,7 +60,7 @@ export function PitPoster({ className, id, fit }: Props) {
       {/* 3 · machines and stockpiles on the benches */}
       <g data-layer="3" style={{ willChange: 'transform' }}>
         {/* stockpiles, bench 2 */}
-        <g fill="var(--stone)">
+        <g fill="var(--rock)">
           <polygon points="856,730 916,672 976,730" />
           <polygon points="948,730 1000,690 1052,730" opacity=".85" />
         </g>
