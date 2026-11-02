@@ -36,7 +36,7 @@ export function Hero() {
   return (
     <section id="hero" ref={ref} className="relative bg-dark text-dark-ink">
       {/* Photo band */}
-      <div className="relative h-[56dvh] min-h-[360px] md:h-[68dvh] md:min-h-[520px]">
+      <div className="relative h-[56dvh] min-h-[360px] md:h-[min(72dvh,48vw)] md:min-h-[520px]">
         {/* Phones get the 800w cut (62 kB) so the LCP lands early on 4G; the scrim hides the softness. */}
         <picture>
           <source media="(max-width: 640px)" srcSet="/photo/hero-plant-xs.webp" />
@@ -49,10 +49,10 @@ export function Hero() {
             alt="Mészkő bányafal, előtte törő-osztályozó üzem és depók"
             fetchPriority="high"
             decoding="async"
-            className="h-full w-full object-cover object-[60%_50%]"
+            className="h-full w-full object-cover object-[55%_72%]"
           />
         </picture>
-        <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-dark/60 via-dark/10 via-40% to-transparent" />
+        <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-dark via-dark/30 via-30% to-transparent" />
         <div aria-hidden="true" className="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-dark/75 to-transparent" />
         {/* Link cards, desktop: bottom-right of the photo */}
         <div data-copy className="absolute bottom-6 right-8 hidden grid-cols-2 gap-3 lg:grid lg:w-[420px]">
