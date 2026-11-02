@@ -10,10 +10,10 @@
    Spec: docs/superpowers/specs/2026-11-02-meszko-polgar-website-design.md §3
 ------------------------------------------------------------------- */
 :root {
-  --bg: #141311;
-  --bg-raised: #1D1B18;
+  --bg: #1A1816;
+  --bg-raised: #242119;
   --ink: #EDE8DF;
-  --stone: #A9A295;
+  --stone: #B5AEA0;
   --stone-deep: #8A847A;
   --hairline: rgba(237, 232, 223, 0.12);
   --accent: #E4561B;

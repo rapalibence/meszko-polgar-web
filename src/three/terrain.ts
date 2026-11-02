@@ -13,8 +13,16 @@ export type PitData = {
   normals: Float32Array;
   heightAt(x: number, z: number): number;
   tierHeight(i: number): number;
+  /** Points along the haul-ramp centreline from rim (i=0) to floor. */
+  rampSamples(count: number): { x: number; y: number; z: number; angle: number }[];
   extent: number;
 };
+
+/** Haul ramp: a helix from rim to floor. */
+const RAMP_TURNS = 1.15;
+const RAMP_START_ANGLE = -0.9;
+const RAMP_HALF_WIDTH = 0.95; // world units across the ramp
+const RAMP_INNER = 0.22; // ramp ends at this fraction of radius (the floor)
 
 /** Fraction of a ring's width taken by the sloped face between two benches. */
 const SLOPE_RING_FRACTION = 0.3;
@@ -41,6 +49,18 @@ export function buildPit(opts: PitOptions): PitData {
 
   const tierHeight = (i: number) => 0 - tierStep * Math.min(tiers, Math.max(0, i)) + 0;
 
+  // Ramp geometry in polar terms: at distance d (rim=radius → floor=RAMP_INNER*radius)
+  // the centreline angle is start + progress * turns * 2π, and its height follows the pit slope.
+  const rampProgress = (d: number) => clamp01((radius - d) / (radius * (1 - RAMP_INNER)));
+  const rampAngleAt = (d: number) => RAMP_START_ANGLE + rampProgress(d) * RAMP_TURNS * Math.PI * 2;
+  const rampHeightAt = (d: number) => -depth * rampProgress(d);
+  const angDiff = (a: number, b: number) => {
+    let x = a - b;
+    while (x > Math.PI) x -= Math.PI * 2;
+    while (x < -Math.PI) x += Math.PI * 2;
+    return x;
+  };
+
   const heightAt = (x: number, z: number): number => {
     // Low-frequency wobble so the benches are not perfect circles.
     const wobble = noise(x * 0.05 + 31, z * 0.05 - 17) * radius * 0.06;
@@ -57,8 +77,27 @@ export function buildPit(opts: PitOptions): PitData {
     const insideRim = d < radius;
     const amplitude = insideRim ? (onSlope ? depth * 0.004 : depth * 0.012) : depth * 0.01;
     const n = noise(x * 0.12, z * 0.12);
-    return base + n * amplitude;
+    const bench = base + n * amplitude;
+
+    // Carve the haul ramp: blend toward the ramp height within its angular width.
+    const dRaw = Math.hypot(x, z);
+    if (dRaw < radius * 1.02 && dRaw > radius * RAMP_INNER * 0.9) {
+      const a = Math.atan2(z, x);
+      const across = Math.abs(angDiff(a, rampAngleAt(dRaw))) * Math.max(dRaw, 0.5);
+      if (across < RAMP_HALF_WIDTH * 1.6) {
+        const k = 1 - clamp01((across - RAMP_HALF_WIDTH) / (RAMP_HALF_WIDTH * 0.6));
+        return bench + (rampHeightAt(dRaw) - bench) * k;
+      }
+    }
+    return bench;
   };
+
+  const rampSamples = (count: number) =>
+    Array.from({ length: count }, (_, i) => {
+      const d = radius - (i / (count - 1)) * radius * (1 - RAMP_INNER);
+      const angle = rampAngleAt(d);
+      return { x: Math.cos(angle) * d, z: Math.sin(angle) * d, y: rampHeightAt(d), angle };
+    });
 
   // Polar grid: `segments` rings x `segments` angular steps. Rings follow the
   // benches, so terrace faces triangulate cleanly (no sawtooth).
@@ -116,5 +155,5 @@ export function buildPit(opts: PitOptions): PitData {
     }
   }
 
-  return { positions, normals, heightAt, tierHeight, extent };
+  return { positions, normals, heightAt, tierHeight, rampSamples, extent };
 }

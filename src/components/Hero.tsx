@@ -5,6 +5,7 @@ import { EASE } from '../lib/motion';
 import { useScrollStore } from '../lib/scrollStore';
 import { useReducedMotion } from '../lib/useReducedMotion';
 import { ButtonLink } from './ui/Button';
+import { Check } from '@phosphor-icons/react';
 
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
@@ -44,7 +45,15 @@ export function Hero() {
           <motion.p {...item(2)} className="mt-6 max-w-[46ch] text-[17px] leading-[1.55] text-stone">
             {site.hero.sub}
           </motion.p>
-          <motion.div {...item(3)} className="mt-9 flex flex-wrap gap-3">
+          <motion.ul {...item(3)} className="mt-5 flex flex-wrap gap-x-6 gap-y-2">
+            {site.hero.proof.map((p) => (
+              <li key={p} className="flex items-center gap-2 text-[14px] text-ink/85">
+                <Check size={16} weight="bold" className="text-accent" aria-hidden="true" />
+                {p}
+              </li>
+            ))}
+          </motion.ul>
+          <motion.div {...item(4)} className="mt-8 flex flex-wrap gap-3">
             <ButtonLink href="#kapcsolat" data-cta>{site.cta}</ButtonLink>
             <ButtonLink href="#termekek" variant="outline">{site.hero.secondary}</ButtonLink>
           </motion.div>
@@ -52,6 +61,18 @@ export function Hero() {
         {/* Right 7/12 intentionally empty: the fixed PitScene canvas shows through. */}
         <div className="hidden md:block md:col-span-6 lg:col-span-7" aria-hidden="true" />
       </div>
+      {/* Survey readout over the canvas, bottom right. */}
+      <motion.dl
+        {...item(5)}
+        className="pointer-events-none absolute bottom-8 right-5 md:right-8 hidden md:flex items-center gap-6 font-mono text-[12px] text-stone"
+      >
+        {site.hero.data.map((d, i) => (
+          <div key={d} className="flex items-center gap-6">
+            {i > 0 && <span className="h-3 w-px bg-hairline" aria-hidden="true" />}
+            <dd>{d}</dd>
+          </div>
+        ))}
+      </motion.dl>
     </section>
   );
 }

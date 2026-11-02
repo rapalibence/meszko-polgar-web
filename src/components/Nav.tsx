@@ -54,7 +54,7 @@ export function Nav() {
         data-nav
         className={cn(
           'fixed inset-x-0 top-0 z-40 h-[72px] transition-colors duration-200',
-          scrolled ? 'bg-bg/90 backdrop-blur-[2px] border-b border-hairline' : 'bg-transparent',
+          scrolled ? 'bg-bg/95 border-b border-hairline' : 'bg-transparent',
         )}
         style={{ transitionTimingFunction: 'var(--ease)' }}
       >

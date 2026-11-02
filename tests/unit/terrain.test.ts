@@ -28,6 +28,18 @@ describe('buildPit', () => {
     expect(Array.from(again.positions)).toEqual(Array.from(pit.positions));
   });
 
+  it('carves a continuous haul ramp that descends monotonically from rim to floor', () => {
+    const samples = pit.rampSamples(40);
+    expect(samples.length).toBe(40);
+    for (let i = 1; i < samples.length; i++) {
+      expect(samples[i].y).toBeLessThanOrEqual(samples[i - 1].y + 1e-6);
+      // Terrain height on the ramp centreline follows the ramp, not the bench step.
+      expect(Math.abs(pit.heightAt(samples[i].x, samples[i].z) - samples[i].y)).toBeLessThan(0.6);
+    }
+    expect(samples[0].y).toBeGreaterThan(-1);
+    expect(samples[samples.length - 1].y).toBeLessThan(-opts.depth * 0.85);
+  });
+
   it('exposes tier heights and a monotonic height function toward the rim', () => {
     expect(pit.tierHeight(0)).toBe(0);
     expect(pit.tierHeight(7)).toBe(-48);
